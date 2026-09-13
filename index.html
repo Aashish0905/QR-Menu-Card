@@ -1,1727 +1,875 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <meta name="theme-color" content="#111111">
-
-    <meta name="description"
-          content="Hotel Jatashankar Chhatarpur - Digital Menu">
+    <meta
+        name="description"
+        content="Hotel Jatashankar Chhatarpur Digital QR Menu"
+    >
 
     <title>Hotel Jatashankar | Digital Menu</title>
 
-    <!-- Google Fonts -->
+    <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
-          rel="stylesheet">
-
-    <!-- Icons -->
     <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
         rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
     >
 
-    <!-- Main CSS -->
+    <!-- QR Code Library -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+    ></script>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <!-- =====================================================
-         HEADER
-    ====================================================== -->
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
-    <header class="site-header" id="siteHeader">
+<header class="site-header">
 
-        <div class="header-inner">
+    <div class="header-inner">
 
-            <a href="#" class="brand" aria-label="Hotel Jatashankar Home">
+        <a href="#" class="brand">
 
-                <div class="brand-icon">
-                    <i class="fa-solid fa-utensils"></i>
-                </div>
+            <div class="brand-mark">
+                HJ
+            </div>
 
-                <div class="brand-text">
-                    <span class="brand-name">
-                        Hotel Jatashankar
-                    </span>
+            <div class="brand-text">
+                <strong>Hotel Jatashankar</strong>
+                <span>Chhatarpur</span>
+            </div>
 
-                    <span class="brand-location">
-                        Chhatarpur, Madhya Pradesh
-                    </span>
-                </div>
+        </a>
 
+
+        <div class="header-actions">
+
+            <button
+                class="header-qr-btn"
+                id="openQRBtn"
+                type="button"
+            >
+                <span>▣</span>
+                QR Menu
+            </button>
+
+            <button
+                class="cart-btn"
+                id="cartOpenBtn"
+                type="button"
+                aria-label="Open cart"
+            >
+                🛒
+
+                <span
+                    class="cart-count"
+                    id="cartCount"
+                >
+                    0
+                </span>
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+
+        <span class="hero-label">
+            WELCOME TO
+        </span>
+
+        <h1>
+            Hotel <span>Jatashankar</span>
+        </h1>
+
+        <p>
+            Delicious food, comfortable dining
+            and a premium digital menu experience.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a
+                href="#menu"
+                class="primary-btn"
+            >
+                Explore Menu
             </a>
 
-
-            <div class="header-actions">
-
-                <button
-                    class="icon-btn"
-                    id="searchToggle"
-                    aria-label="Search menu"
-                    type="button"
-                >
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-
-
-                <button
-                    class="cart-btn"
-                    id="cartOpenBtn"
-                    aria-label="Open cart"
-                    type="button"
-                >
-
-                    <i class="fa-solid fa-bag-shopping"></i>
-
-                    <span class="cart-count" id="cartCount">
-                        0
-                    </span>
-
-                </button>
-
-            </div>
+            <button
+                class="secondary-btn"
+                id="heroQRBtn"
+                type="button"
+            >
+                Scan QR Menu
+            </button>
 
         </div>
 
+    </div>
 
-        <!-- Search Bar -->
+</section>
 
-        <div class="search-container" id="searchContainer">
 
-            <div class="search-box">
+<!-- =====================================================
+     SEARCH + CATEGORIES
+===================================================== -->
 
-                <i class="fa-solid fa-magnifying-glass"></i>
+<section class="menu-section" id="menu">
 
-                <input
-                    type="search"
-                    id="menuSearch"
-                    placeholder="Search dishes..."
-                    autocomplete="off"
-                >
+    <div class="section-heading">
 
-                <button
-                    id="clearSearch"
-                    class="clear-search"
-                    type="button"
-                    aria-label="Clear search"
-                >
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+        <span>
+            OUR MENU
+        </span>
 
-            </div>
+        <h2>
+            Choose Your Favourite
+        </h2>
 
-        </div>
+        <p>
+            Freshly prepared dishes for every taste.
+        </p>
 
-    </header>
+    </div>
 
 
+    <div class="menu-controls">
 
-    <!-- =====================================================
-         HERO
-    ====================================================== -->
+        <div class="search-box">
 
-    <main>
+            <span>⌕</span>
 
-        <section class="hero-section">
-
-            <div class="hero-overlay"></div>
-
-            <div class="hero-content">
-
-                <span class="hero-badge">
-                    <i class="fa-solid fa-star"></i>
-                    Welcome to Hotel Jatashankar
-                </span>
-
-                <h1>
-                    Taste the
-                    <span>Good Life.</span>
-                </h1>
-
-                <p>
-                    Fresh food, authentic flavours and
-                    unforgettable dining in Chhatarpur.
-                </p>
-
-                <a href="#menu" class="hero-btn">
-
-                    Explore Menu
-
-                    <i class="fa-solid fa-arrow-down"></i>
-
-                </a>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             QUICK INFO
-        ================================================== -->
-
-        <section class="quick-info">
-
-            <div class="quick-info-inner">
-
-                <div class="info-item">
-
-                    <div class="info-icon">
-                        <i class="fa-solid fa-clock"></i>
-                    </div>
-
-                    <div>
-                        <strong>Open Daily</strong>
-                        <span>10:00 AM – 11:00 PM</span>
-                    </div>
-
-                </div>
-
-
-                <div class="info-item">
-
-                    <div class="info-icon">
-                        <i class="fa-solid fa-location-dot"></i>
-                    </div>
-
-                    <div>
-                        <strong>Location</strong>
-                        <span>Chhatarpur, M.P.</span>
-                    </div>
-
-                </div>
-
-
-                <div class="info-item">
-
-                    <div class="info-icon">
-                        <i class="fa-solid fa-motorcycle"></i>
-                    </div>
-
-                    <div>
-                        <strong>Order Online</strong>
-                        <span>Quick & Easy</span>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             MENU SECTION
-        ================================================== -->
-
-        <section class="menu-section" id="menu">
-
-            <div class="section-heading">
-
-                <span class="section-label">
-                    Our Menu
-                </span>
-
-                <h2>
-                    Choose Your
-                    <span>Favourite.</span>
-                </h2>
-
-                <p>
-                    Delicious dishes prepared with quality
-                    ingredients and served fresh.
-                </p>
-
-            </div>
-
-
-
-            <!-- CATEGORY FILTER -->
-
-            <div class="category-wrapper">
-
-                <div
-                    class="category-scroll"
-                    id="categoryFilters"
-                >
-
-                    <button
-                        class="category-btn active"
-                        data-category="all"
-                        type="button"
-                    >
-                        <i class="fa-solid fa-border-all"></i>
-                        All
-                    </button>
-
-
-                    <button
-                        class="category-btn"
-                        data-category="starters"
-                        type="button"
-                    >
-                        <i class="fa-solid fa-bowl-food"></i>
-                        Starters
-                    </button>
-
-
-                    <button
-                        class="category-btn"
-                        data-category="north-indian"
-                        type="button"
-                    >
-                        <i class="fa-solid fa-utensils"></i>
-                        North Indian
-                    </button>
-
-
-                    <button
-                        class="category-btn"
-                        data-category="chinese"
-                        type="button"
-                    >
-                        <i class="fa-solid fa-fire-burner"></i>
-                        Chinese
-                    </button>
-
-
-                    <button
-                        class="category-btn"
-                        data-category="breads"
-                        type="button"
-                    >
-                        <i class="fa-solid fa-wheat-awn"></i>
-                        Breads
-                    </button>
-
-
-                    <button
-                        class="category-btn"
-                        data-category="rice"
-                        type="button"
-                    >
-                        <i class="fa-solid fa-bowl-rice"></i>
-                        Rice
-                    </button>
-
-
-                    <button
-                        class="category-btn"
-                        data-category="beverages"
-                        type="button"
-                    >
-                        <i class="fa-solid fa-mug-hot"></i>
-                        Beverages
-                    </button>
-
-
-                    <button
-                        class="category-btn"
-                        data-category="desserts"
-                        type="button"
-                    >
-                        <i class="fa-solid fa-ice-cream"></i>
-                        Desserts
-                    </button>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- MENU GRID -->
-
-            <div
-                class="menu-grid"
-                id="menuGrid"
+            <input
+                type="search"
+                id="menuSearch"
+                placeholder="Search food..."
+                autocomplete="off"
             >
-
-
-                <!-- ITEM 1 -->
-
-                <article
-                    class="menu-card"
-                    data-category="starters"
-                    data-name="Paneer Tikka"
-                    data-price="220"
-                >
-
-                    <div class="food-image">
-
-                        <img
-                            src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=900&q=80"
-                            alt="Paneer Tikka"
-                            loading="lazy"
-                        >
-
-                        <span class="food-tag">
-                            Bestseller
-                        </span>
-
-                    </div>
-
-
-                    <div class="food-content">
-
-                        <div class="food-title-row">
-
-                            <h3>Paneer Tikka</h3>
-
-                            <span class="food-price">
-                                ₹220
-                            </span>
-
-                        </div>
-
-                        <p>
-                            Marinated paneer grilled with
-                            aromatic spices and vegetables.
-                        </p>
-
-
-                        <button
-                            class="add-to-cart"
-                            data-id="paneer-tikka"
-                            type="button"
-                        >
-                            <span>Add to Cart</span>
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- ITEM 2 -->
-
-                <article
-                    class="menu-card"
-                    data-category="starters"
-                    data-name="Veg Manchurian"
-                    data-price="180"
-                >
-
-                    <div class="food-image">
-
-                        <img
-                            src="https://images.unsplash.com/photo-1625398407796-82650a8c0d3c?auto=format&fit=crop&w=900&q=80"
-                            alt="Veg Manchurian"
-                            loading="lazy"
-                        >
-
-                    </div>
-
-
-                    <div class="food-content">
-
-                        <div class="food-title-row">
-
-                            <h3>Veg Manchurian</h3>
-
-                            <span class="food-price">
-                                ₹180
-                            </span>
-
-                        </div>
-
-                        <p>
-                            Crispy vegetable balls tossed
-                            in a delicious Indo-Chinese sauce.
-                        </p>
-
-
-                        <button
-                            class="add-to-cart"
-                            data-id="veg-manchurian"
-                            type="button"
-                        >
-                            <span>Add to Cart</span>
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- ITEM 3 -->
-
-                <article
-                    class="menu-card"
-                    data-category="north-indian"
-                    data-name="Paneer Butter Masala"
-                    data-price="240"
-                >
-
-                    <div class="food-image">
-
-                        <img
-                            src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=900&q=80"
-                            alt="Paneer Butter Masala"
-                            loading="lazy"
-                        >
-
-                        <span class="food-tag">
-                            Popular
-                        </span>
-
-                    </div>
-
-
-                    <div class="food-content">
-
-                        <div class="food-title-row">
-
-                            <h3>Paneer Butter Masala</h3>
-
-                            <span class="food-price">
-                                ₹240
-                            </span>
-
-                        </div>
-
-                        <p>
-                            Soft paneer cooked in a rich,
-                            creamy tomato gravy.
-                        </p>
-
-
-                        <button
-                            class="add-to-cart"
-                            data-id="paneer-butter-masala"
-                            type="button"
-                        >
-                            <span>Add to Cart</span>
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- ITEM 4 -->
-
-                <article
-                    class="menu-card"
-                    data-category="north-indian"
-                    data-name="Dal Tadka"
-                    data-price="160"
-                >
-
-                    <div class="food-image">
-
-                        <img
-                            src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=900&q=80"
-                            alt="Dal Tadka"
-                            loading="lazy"
-                        >
-
-                    </div>
-
-
-                    <div class="food-content">
-
-                        <div class="food-title-row">
-
-                            <h3>Dal Tadka</h3>
-
-                            <span class="food-price">
-                                ₹160
-                            </span>
-
-                        </div>
-
-                        <p>
-                            Yellow dal tempered with
-                            garlic, cumin and Indian spices.
-                        </p>
-
-
-                        <button
-                            class="add-to-cart"
-                            data-id="dal-tadka"
-                            type="button"
-                        >
-                            <span>Add to Cart</span>
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- ITEM 5 -->
-
-                <article
-                    class="menu-card"
-                    data-category="breads"
-                    data-name="Butter Naan"
-                    data-price="55"
-                >
-
-                    <div class="food-image">
-
-                        <img
-                            src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=900&q=80"
-                            alt="Butter Naan"
-                            loading="lazy"
-                        >
-
-                    </div>
-
-
-                    <div class="food-content">
-
-                        <div class="food-title-row">
-
-                            <h3>Butter Naan</h3>
-
-                            <span class="food-price">
-                                ₹55
-                            </span>
-
-                        </div>
-
-                        <p>
-                            Soft tandoori naan finished
-                            with delicious butter.
-                        </p>
-
-
-                        <button
-                            class="add-to-cart"
-                            data-id="butter-naan"
-                            type="button"
-                        >
-                            <span>Add to Cart</span>
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- ITEM 6 -->
-
-                <article
-                    class="menu-card"
-                    data-category="rice"
-                    data-name="Veg Biryani"
-                    data-price="220"
-                >
-
-                    <div class="food-image">
-
-                        <img
-                            src="https://images.unsplash.com/photo-1563379091339-03246963d96c?auto=format&fit=crop&w=900&q=80"
-                            alt="Veg Biryani"
-                            loading="lazy"
-                        >
-
-                        <span class="food-tag">
-                            Chef's Choice
-                        </span>
-
-                    </div>
-
-
-                    <div class="food-content">
-
-                        <div class="food-title-row">
-
-                            <h3>Veg Biryani</h3>
-
-                            <span class="food-price">
-                                ₹220
-                            </span>
-
-                        </div>
-
-                        <p>
-                            Fragrant basmati rice cooked
-                            with vegetables and aromatic spices.
-                        </p>
-
-
-                        <button
-                            class="add-to-cart"
-                            data-id="veg-biryani"
-                            type="button"
-                        >
-                            <span>Add to Cart</span>
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- ITEM 7 -->
-
-                <article
-                    class="menu-card"
-                    data-category="chinese"
-                    data-name="Veg Hakka Noodles"
-                    data-price="170"
-                >
-
-                    <div class="food-image">
-
-                        <img
-                            src="https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=900&q=80"
-                            alt="Veg Hakka Noodles"
-                            loading="lazy"
-                        >
-
-                    </div>
-
-
-                    <div class="food-content">
-
-                        <div class="food-title-row">
-
-                            <h3>Veg Hakka Noodles</h3>
-
-                            <span class="food-price">
-                                ₹170
-                            </span>
-
-                        </div>
-
-                        <p>
-                            Stir-fried noodles with fresh
-                            vegetables and Asian flavours.
-                        </p>
-
-
-                        <button
-                            class="add-to-cart"
-                            data-id="veg-hakka-noodles"
-                            type="button"
-                        >
-                            <span>Add to Cart</span>
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- ITEM 8 -->
-
-                <article
-                    class="menu-card"
-                    data-category="beverages"
-                    data-name="Cold Coffee"
-                    data-price="120"
-                >
-
-                    <div class="food-image">
-
-                        <img
-                            src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=900&q=80"
-                            alt="Cold Coffee"
-                            loading="lazy"
-                        >
-
-                    </div>
-
-
-                    <div class="food-content">
-
-                        <div class="food-title-row">
-
-                            <h3>Cold Coffee</h3>
-
-                            <span class="food-price">
-                                ₹120
-                            </span>
-
-                        </div>
-
-                        <p>
-                            Chilled creamy coffee blended
-                            for a refreshing finish.
-                        </p>
-
-
-                        <button
-                            class="add-to-cart"
-                            data-id="cold-coffee"
-                            type="button"
-                        >
-                            <span>Add to Cart</span>
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- ITEM 9 -->
-
-                <article
-                    class="menu-card"
-                    data-category="beverages"
-                    data-name="Fresh Lime Soda"
-                    data-price="80"
-                >
-
-                    <div class="food-image">
-
-                        <img
-                            src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=900&q=80"
-                            alt="Fresh Lime Soda"
-                            loading="lazy"
-                        >
-
-                    </div>
-
-
-                    <div class="food-content">
-
-                        <div class="food-title-row">
-
-                            <h3>Fresh Lime Soda</h3>
-
-                            <span class="food-price">
-                                ₹80
-                            </span>
-
-                        </div>
-
-                        <p>
-                            Refreshing lime drink available
-                            in sweet or salted style.
-                        </p>
-
-
-                        <button
-                            class="add-to-cart"
-                            data-id="fresh-lime-soda"
-                            type="button"
-                        >
-                            <span>Add to Cart</span>
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- ITEM 10 -->
-
-                <article
-                    class="menu-card"
-                    data-category="desserts"
-                    data-name="Gulab Jamun"
-                    data-price="100"
-                >
-
-                    <div class="food-image">
-
-                        <img
-                            src="https://images.unsplash.com/photo-1601303516534-1c8e5c4a6a4f?auto=format&fit=crop&w=900&q=80"
-                            alt="Gulab Jamun"
-                            loading="lazy"
-                        >
-
-                    </div>
-
-
-                    <div class="food-content">
-
-                        <div class="food-title-row">
-
-                            <h3>Gulab Jamun</h3>
-
-                            <span class="food-price">
-                                ₹100
-                            </span>
-
-                        </div>
-
-                        <p>
-                            Soft warm gulab jamun served
-                            with fragrant sugar syrup.
-                        </p>
-
-
-                        <button
-                            class="add-to-cart"
-                            data-id="gulab-jamun"
-                            type="button"
-                        >
-                            <span>Add to Cart</span>
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- ITEM 11 -->
-
-                <article
-                    class="menu-card"
-                    data-category="rice"
-                    data-name="Jeera Rice"
-                    data-price="130"
-                >
-
-                    <div class="food-image">
-
-                        <img
-                            src="https://images.unsplash.com/photo-1516684732162-798a0062be99?auto=format&fit=crop&w=900&q=80"
-                            alt="Jeera Rice"
-                            loading="lazy"
-                        >
-
-                    </div>
-
-
-                    <div class="food-content">
-
-                        <div class="food-title-row">
-
-                            <h3>Jeera Rice</h3>
-
-                            <span class="food-price">
-                                ₹130
-                            </span>
-
-                        </div>
-
-                        <p>
-                            Fragrant basmati rice tempered
-                            with roasted cumin.
-                        </p>
-
-
-                        <button
-                            class="add-to-cart"
-                            data-id="jeera-rice"
-                            type="button"
-                        >
-                            <span>Add to Cart</span>
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- ITEM 12 -->
-
-                <article
-                    class="menu-card"
-                    data-category="starters"
-                    data-name="French Fries"
-                    data-price="120"
-                >
-
-                    <div class="food-image">
-
-                        <img
-                            src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=900&q=80"
-                            alt="French Fries"
-                            loading="lazy"
-                        >
-
-                    </div>
-
-
-                    <div class="food-content">
-
-                        <div class="food-title-row">
-
-                            <h3>French Fries</h3>
-
-                            <span class="food-price">
-                                ₹120
-                            </span>
-
-                        </div>
-
-                        <p>
-                            Crispy golden fries served
-                            with your favourite dip.
-                        </p>
-
-
-                        <button
-                            class="add-to-cart"
-                            data-id="french-fries"
-                            type="button"
-                        >
-                            <span>Add to Cart</span>
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-
-                    </div>
-
-                </article>
-
-            </div>
-
-
-            <!-- NO RESULTS -->
-
-            <div
-                class="no-results"
-                id="noResults"
-                hidden
-            >
-
-                <div class="no-results-icon">
-                    <i class="fa-solid fa-utensils"></i>
-                </div>
-
-                <h3>
-                    No dishes found
-                </h3>
-
-                <p>
-                    Try another dish name or category.
-                </p>
-
-                <button
-                    id="resetMenu"
-                    type="button"
-                >
-                    View All Dishes
-                </button>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             SPECIAL OFFER
-        ================================================== -->
-
-        <section class="offer-section">
-
-            <div class="offer-card">
-
-                <div class="offer-content">
-
-                    <span class="offer-label">
-                        Today's Special
-                    </span>
-
-                    <h2>
-                        Family Feast
-                    </h2>
-
-                    <p>
-                        Delicious food for the whole family.
-                        Perfect for lunch and dinner.
-                    </p>
-
-                    <button
-                        class="offer-btn"
-                        type="button"
-                        data-offer="family-feast"
-                    >
-                        Explore Offer
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-
-                </div>
-
-                <div class="offer-decoration">
-                    <i class="fa-solid fa-bowl-food"></i>
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             HOTEL INFO
-        ================================================== -->
-
-        <section class="hotel-info">
-
-            <div class="section-heading">
-
-                <span class="section-label">
-                    Visit Us
-                </span>
-
-                <h2>
-                    Good Food.
-                    <span>Good Moments.</span>
-                </h2>
-
-            </div>
-
-
-            <div class="hotel-info-grid">
-
-                <div class="hotel-info-card">
-
-                    <div class="hotel-info-icon">
-                        <i class="fa-solid fa-location-dot"></i>
-                    </div>
-
-                    <h3>Our Location</h3>
-
-                    <p>
-                        Hotel Jatashankar,<br>
-                        Chhatarpur, Madhya Pradesh
-                    </p>
-
-                    <a
-                        href="https://www.google.com/maps/search/?api=1&query=Hotel+Jatashankar+Chhatarpur"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Get Directions
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                    </a>
-
-                </div>
-
-
-                <div class="hotel-info-card">
-
-                    <div class="hotel-info-icon">
-                        <i class="fa-solid fa-phone"></i>
-                    </div>
-
-                    <h3>Call Us</h3>
-
-                    <p>
-                        Have a question?<br>
-                        Our team is happy to help.
-                    </p>
-
-                    <a href="tel:+919999999999">
-                        Call Now
-                        <i class="fa-solid fa-phone"></i>
-                    </a>
-
-                </div>
-
-
-                <div class="hotel-info-card">
-
-                    <div class="hotel-info-icon">
-                        <i class="fa-brands fa-whatsapp"></i>
-                    </div>
-
-                    <h3>WhatsApp Order</h3>
-
-                    <p>
-                        Place your order directly
-                        through WhatsApp.
-                    </p>
-
-                    <button
-                        class="whatsapp-info-btn"
-                        id="whatsappInfoBtn"
-                        type="button"
-                    >
-                        Chat on WhatsApp
-                        <i class="fa-brands fa-whatsapp"></i>
-                    </button>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-
-    <!-- =====================================================
-         CART DRAWER
-    ====================================================== -->
-
-    <div
-        class="cart-overlay"
-        id="cartOverlay"
-        hidden
-    ></div>
-
-
-    <aside
-        class="cart-drawer"
-        id="cartDrawer"
-        aria-label="Shopping cart"
-        aria-hidden="true"
-    >
-
-        <div class="cart-header">
-
-            <div>
-
-                <span class="cart-eyebrow">
-                    Your Order
-                </span>
-
-                <h2>
-                    My Cart
-                </h2>
-
-            </div>
 
             <button
-                class="close-btn"
-                id="cartCloseBtn"
+                id="clearSearch"
                 type="button"
-                aria-label="Close cart"
             >
-                <i class="fa-solid fa-xmark"></i>
+                ×
             </button>
 
         </div>
 
 
         <div
-            class="cart-items"
-            id="cartItems"
+            class="category-filters"
+            id="categoryFilters"
         >
-
-            <!-- Javascript will insert cart items -->
-
-        </div>
-
-
-        <!-- Empty Cart -->
-
-        <div
-            class="empty-cart"
-            id="emptyCart"
-        >
-
-            <div class="empty-cart-icon">
-                <i class="fa-solid fa-bag-shopping"></i>
-            </div>
-
-            <h3>
-                Your cart is empty
-            </h3>
-
-            <p>
-                Add some delicious dishes to get started.
-            </p>
 
             <button
-                id="startOrdering"
+                class="category-btn active"
+                data-category="all"
                 type="button"
             >
-                Browse Menu
+                All
             </button>
-
-        </div>
-
-
-        <!-- Cart Footer -->
-
-        <div
-            class="cart-footer"
-            id="cartFooter"
-            hidden
-        >
-
-            <div class="bill-row">
-
-                <span>Subtotal</span>
-
-                <strong id="cartSubtotal">
-                    ₹0
-                </strong>
-
-            </div>
-
-
-            <div class="bill-row small">
-
-                <span>Taxes</span>
-
-                <span id="cartTax">
-                    ₹0
-                </span>
-
-            </div>
-
-
-            <div class="bill-total">
-
-                <span>Total</span>
-
-                <strong id="cartTotal">
-                    ₹0
-                </strong>
-
-            </div>
-
 
             <button
-                class="checkout-btn"
-                id="checkoutBtn"
+                class="category-btn"
+                data-category="starters"
                 type="button"
             >
-                Proceed to Checkout
-                <i class="fa-solid fa-arrow-right"></i>
+                Starters
             </button>
 
-        </div>
-
-    </aside>
-
-
-
-    <!-- =====================================================
-         CHECKOUT MODAL
-    ====================================================== -->
-
-    <div
-        class="modal-backdrop"
-        id="checkoutModal"
-        hidden
-    >
-
-        <div
-            class="checkout-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="checkoutTitle"
-        >
-
-            <div class="modal-header">
-
-                <div>
-
-                    <span class="cart-eyebrow">
-                        Almost Done
-                    </span>
-
-                    <h2 id="checkoutTitle">
-                        Checkout
-                    </h2>
-
-                </div>
-
-                <button
-                    class="close-btn"
-                    id="checkoutCloseBtn"
-                    type="button"
-                    aria-label="Close checkout"
-                >
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-
-            </div>
-
-
-            <form id="checkoutForm">
-
-                <!-- Customer Details -->
-
-                <div class="form-section">
-
-                    <h3>
-                        Customer Details
-                    </h3>
-
-
-                    <div class="form-group">
-
-                        <label for="customerName">
-                            Full Name
-                        </label>
-
-                        <input
-                            type="text"
-                            id="customerName"
-                            name="customerName"
-                            placeholder="Enter your name"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label for="customerPhone">
-                            Mobile Number
-                        </label>
-
-                        <input
-                            type="tel"
-                            id="customerPhone"
-                            name="customerPhone"
-                            placeholder="Enter mobile number"
-                            inputmode="numeric"
-                            maxlength="10"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label for="customerAddress">
-                            Delivery / Table Details
-                        </label>
-
-                        <textarea
-                            id="customerAddress"
-                            name="customerAddress"
-                            rows="3"
-                            placeholder="Table number / delivery address"
-                            required
-                        ></textarea>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Order Type -->
-
-                <div class="form-section">
-
-                    <h3>
-                        Order Type
-                    </h3>
-
-                    <div class="order-type-grid">
-
-                        <label class="order-type">
-
-                            <input
-                                type="radio"
-                                name="orderType"
-                                value="dine-in"
-                                checked
-                            >
-
-                            <span>
-
-                                <i class="fa-solid fa-chair"></i>
-
-                                <strong>Dine In</strong>
-
-                                <small>
-                                    Eat at hotel
-                                </small>
-
-                            </span>
-
-                        </label>
-
-
-                        <label class="order-type">
-
-                            <input
-                                type="radio"
-                                name="orderType"
-                                value="takeaway"
-                            >
-
-                            <span>
-
-                                <i class="fa-solid fa-bag-shopping"></i>
-
-                                <strong>Takeaway</strong>
-
-                                <small>
-                                    Pick up order
-                                </small>
-
-                            </span>
-
-                        </label>
-
-
-                        <label class="order-type">
-
-                            <input
-                                type="radio"
-                                name="orderType"
-                                value="delivery"
-                            >
-
-                            <span>
-
-                                <i class="fa-solid fa-motorcycle"></i>
-
-                                <strong>Delivery</strong>
-
-                                <small>
-                                    Get it delivered
-                                </small>
-
-                            </span>
-
-                        </label>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Payment -->
-
-                <div class="form-section">
-
-                    <h3>
-                        Payment Method
-                    </h3>
-
-
-                    <div class="payment-options">
-
-                        <label class="payment-option">
-
-                            <input
-                                type="radio"
-                                name="payment"
-                                value="cash"
-                                checked
-                            >
-
-                            <span>
-
-                                <i class="fa-solid fa-money-bill-wave"></i>
-
-                                Cash
-
-                            </span>
-
-                        </label>
-
-
-                        <label class="payment-option">
-
-                            <input
-                                type="radio"
-                                name="payment"
-                                value="upi"
-                            >
-
-                            <span>
-
-                                <i class="fa-solid fa-qrcode"></i>
-
-                                UPI
-
-                            </span>
-
-                        </label>
-
-
-                        <label class="payment-option">
-
-                            <input
-                                type="radio"
-                                name="payment"
-                                value="online"
-                            >
-
-                            <span>
-
-                                <i class="fa-solid fa-credit-card"></i>
-
-                                Online
-
-                            </span>
-
-                        </label>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Order Summary -->
-
-                <div class="checkout-summary">
-
-                    <div class="summary-heading">
-
-                        <h3>
-                            Order Summary
-                        </h3>
-
-                    </div>
-
-
-                    <div
-                        id="checkoutItems"
-                        class="checkout-items"
-                    >
-                        <!-- JS -->
-                    </div>
-
-
-                    <div class="summary-total">
-
-                        <span>
-                            Total Amount
-                        </span>
-
-                        <strong id="checkoutTotal">
-                            ₹0
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Submit -->
-
-                <button
-                    class="place-order-btn"
-                    type="submit"
-                >
-
-                    <i class="fa-brands fa-whatsapp"></i>
-
-                    Place Order on WhatsApp
-
-                </button>
-
-
-                <button
-                    class="demo-payment-btn"
-                    id="demoPaymentBtn"
-                    type="button"
-                >
-
-                    <i class="fa-solid fa-lock"></i>
-
-                    Demo Payment
-
-                </button>
-
-                <p class="secure-note">
-
-                    <i class="fa-solid fa-shield-halved"></i>
-
-                    This is a frontend demo.
-                    No real payment will be processed.
-
-                </p>
-
-            </form>
+            <button
+                class="category-btn"
+                data-category="north-indian"
+                type="button"
+            >
+                North Indian
+            </button>
+
+            <button
+                class="category-btn"
+                data-category="chinese"
+                type="button"
+            >
+                Chinese
+            </button>
+
+            <button
+                class="category-btn"
+                data-category="breads"
+                type="button"
+            >
+                Breads
+            </button>
+
+            <button
+                class="category-btn"
+                data-category="rice"
+                type="button"
+            >
+                Rice
+            </button>
+
+            <button
+                class="category-btn"
+                data-category="beverages"
+                type="button"
+            >
+                Beverages
+            </button>
+
+            <button
+                class="category-btn"
+                data-category="desserts"
+                type="button"
+            >
+                Desserts
+            </button>
 
         </div>
 
     </div>
 
 
-
-    <!-- =====================================================
-         ORDER SUCCESS MODAL
-    ====================================================== -->
+    <!-- MENU GRID -->
 
     <div
-        class="modal-backdrop"
-        id="successModal"
-        hidden
+        class="menu-grid"
+        id="menuGrid"
+    ></div>
+
+
+    <!-- NO RESULTS -->
+
+    <div
+        class="no-results"
+        id="noResults"
     >
 
-        <div class="success-modal">
+        <div class="no-results-icon">
+            🍽️
+        </div>
 
-            <div class="success-icon">
+        <h3>
+            No dishes found
+        </h3>
 
-                <i class="fa-solid fa-check"></i>
+        <p>
+            Try another search or category.
+        </p>
 
-            </div>
+        <button
+            id="resetMenu"
+            type="button"
+        >
+            Reset Menu
+        </button>
 
-            <span class="success-label">
-                Order Ready
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     QR SECTION
+===================================================== -->
+
+<section class="qr-section" id="qrMenu">
+
+    <div class="qr-container">
+
+
+        <div class="qr-info">
+
+            <span class="eyebrow">
+                DIGITAL MENU
             </span>
 
             <h2>
-                Thank You!
+                Scan.
+                <span>Explore.</span>
+                Order.
             </h2>
 
             <p>
-                Your demo order has been prepared.
-                Continue to WhatsApp to send the order.
+                Scan the QR code with your phone camera
+                and instantly open the Hotel Jatashankar
+                digital menu.
             </p>
 
 
-            <div class="success-order-number">
+            <div class="qr-benefits">
 
-                <span>
-                    Order ID
-                </span>
+                <div class="benefit">
+                    <span>✓</span>
+                    <strong>View Menu</strong>
+                </div>
 
-                <strong id="orderId">
-                    HJ-0000
-                </strong>
+                <div class="benefit">
+                    <span>✓</span>
+                    <strong>Order Online</strong>
+                </div>
+
+                <div class="benefit">
+                    <span>✓</span>
+                    <strong>WhatsApp Order</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- QR CARD -->
+
+        <div class="qr-card">
+
+            <div class="qr-card-top">
+
+                <div>
+                    <small>HOTEL</small>
+
+                    <h3>
+                        Jatashankar
+                    </h3>
+                </div>
+
+                <div class="qr-logo">
+                    QR
+                </div>
+
+            </div>
+
+
+            <div class="qr-code-box">
+
+                <div id="qrCode"></div>
+
+            </div>
+
+
+            <div class="qr-card-content">
+
+                <h4>
+                    Scan to View Menu
+                </h4>
+
+                <p>
+                    Point your phone camera
+                    at the QR code.
+                </p>
+
+            </div>
+
+
+            <div class="qr-url">
+                aashish0905.github.io/QR-Menu-Card/
+            </div>
+
+
+            <button
+                class="download-qr-btn"
+                id="downloadQRBtn"
+                type="button"
+            >
+                ↓ Download QR
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     CART OVERLAY
+===================================================== -->
+
+<div
+    class="cart-overlay"
+    id="cartOverlay"
+></div>
+
+
+<aside
+    class="cart-drawer"
+    id="cartDrawer"
+>
+
+    <div class="cart-header">
+
+        <div>
+            <span>Your Order</span>
+            <h3>Shopping Cart</h3>
+        </div>
+
+        <button
+            class="close-btn"
+            id="cartCloseBtn"
+            type="button"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <div
+        class="cart-items"
+        id="cartItems"
+    ></div>
+
+
+    <div
+        class="empty-cart"
+        id="emptyCart"
+    >
+
+        <div>
+            🛒
+        </div>
+
+        <h3>
+            Your cart is empty
+        </h3>
+
+        <p>
+            Add something delicious.
+        </p>
+
+        <button
+            id="startOrdering"
+            type="button"
+        >
+            Start Ordering
+        </button>
+
+    </div>
+
+
+    <div
+        class="cart-footer"
+        id="cartFooter"
+    >
+
+        <div class="summary-row">
+            <span>Subtotal</span>
+            <strong id="cartSubtotal">₹0</strong>
+        </div>
+
+        <div class="summary-row">
+            <span>Tax</span>
+            <strong id="cartTax">₹0</strong>
+        </div>
+
+        <div class="summary-total">
+            <span>Total</span>
+            <strong id="cartTotal">₹0</strong>
+        </div>
+
+        <button
+            class="checkout-btn"
+            id="checkoutBtn"
+            type="button"
+        >
+            Proceed to Checkout
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- =====================================================
+     CHECKOUT MODAL
+===================================================== -->
+
+<div
+    class="modal-backdrop"
+    id="checkoutModal"
+>
+
+    <div class="modal">
+
+        <button
+            class="modal-close"
+            id="checkoutCloseBtn"
+            type="button"
+        >
+            ×
+        </button>
+
+        <div class="modal-heading">
+
+            <span>
+                CHECKOUT
+            </span>
+
+            <h2>
+                Complete Your Order
+            </h2>
+
+        </div>
+
+
+        <form id="checkoutForm">
+
+            <div class="form-group">
+
+                <label>
+                    Your Name
+                </label>
+
+                <input
+                    type="text"
+                    id="customerName"
+                    required
+                    placeholder="Enter your name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Mobile Number
+                </label>
+
+                <input
+                    type="tel"
+                    id="customerPhone"
+                    required
+                    placeholder="Enter mobile number"
+                    pattern="[0-9]{10}"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Address / Table No.
+                </label>
+
+                <input
+                    type="text"
+                    id="customerAddress"
+                    placeholder="Table No. / Address"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Order Type
+                </label>
+
+                <div class="radio-grid">
+
+                    <label class="radio-option">
+
+                        <input
+                            type="radio"
+                            name="orderType"
+                            value="Dine In"
+                            checked
+                        >
+
+                        <span>
+                            Dine In
+                        </span>
+
+                    </label>
+
+
+                    <label class="radio-option">
+
+                        <input
+                            type="radio"
+                            name="orderType"
+                            value="Takeaway"
+                        >
+
+                        <span>
+                            Takeaway
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <div class="checkout-summary">
+
+                <h3>
+                    Order Summary
+                </h3>
+
+                <div id="checkoutItems"></div>
+
+                <div class="checkout-total-row">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong id="checkoutTotal">
+                        ₹0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Payment
+                </label>
+
+                <div class="radio-grid">
+
+                    <label class="radio-option">
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="WhatsApp"
+                            checked
+                        >
+
+                        <span>
+                            WhatsApp Order
+                        </span>
+
+                    </label>
+
+
+                    <label class="radio-option">
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="Demo Payment"
+                        >
+
+                        <span>
+                            Demo Payment
+                        </span>
+
+                    </label>
+
+                </div>
 
             </div>
 
 
             <button
-                class="success-whatsapp-btn"
+                class="place-order-btn"
+                type="submit"
+            >
+                Place Order
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     SUCCESS MODAL
+===================================================== -->
+
+<div
+    class="modal-backdrop"
+    id="successModal"
+>
+
+    <div class="success-box">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <span>
+            ORDER SUCCESSFUL
+        </span>
+
+        <h2>
+            Thank You!
+        </h2>
+
+        <p>
+            Your order has been created successfully.
+        </p>
+
+        <div class="order-id">
+            Order ID:
+            <strong id="orderId">
+                -
+            </strong>
+        </div>
+
+        <div class="success-actions">
+
+            <button
                 id="successWhatsappBtn"
                 type="button"
             >
-
-                <i class="fa-brands fa-whatsapp"></i>
-
-                Send Order on WhatsApp
-
+                Send on WhatsApp
             </button>
-
 
             <button
                 class="success-close-btn"
                 id="successCloseBtn"
                 type="button"
             >
-                Back to Menu
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     QR POPUP
+===================================================== -->
+
+<div
+    class="modal-backdrop"
+    id="qrModal"
+>
+
+    <div class="qr-popup">
+
+        <button
+            class="modal-close"
+            id="qrModalClose"
+            type="button"
+        >
+            ×
+        </button>
+
+        <span class="eyebrow">
+            HOTEL JATASHANKAR
+        </span>
+
+        <h2>
+            Scan Menu
+        </h2>
+
+        <p>
+            Scan this QR code to open
+            our digital menu.
+        </p>
+
+
+        <div class="popup-qr">
+            <div id="popupQR"></div>
+        </div>
+
+
+        <button
+            class="download-qr-btn"
+            id="downloadPopupQR"
+            type="button"
+        >
+            ↓ Download QR
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+    class="toast"
+    id="toast"
+>
+
+    <span>
+        ✓
+    </span>
+
+    <p id="toastMessage">
+        Added to cart
+    </p>
+
+</div>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="site-footer">
+
+    <div class="footer-inner">
+
+        <div>
+
+            <h3>
+                Hotel Jatashankar
+            </h3>
+
+            <p>
+                Chhatarpur, Madhya Pradesh
+            </p>
+
+        </div>
+
+
+        <div class="footer-qr-link">
+
+            <button
+                id="footerQRBtn"
+                type="button"
+            >
+                ▣ View QR Menu
             </button>
 
         </div>
@@ -1729,119 +877,40 @@
     </div>
 
 
-
-    <!-- =====================================================
-         FLOATING WHATSAPP
-    ====================================================== -->
-
-    <a
-        href="https://wa.me/919999999999"
-        class="floating-whatsapp"
-        id="floatingWhatsapp"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Chat on WhatsApp"
-    >
-
-        <i class="fa-brands fa-whatsapp"></i>
+    <div class="footer-bottom">
 
         <span>
-            Order on WhatsApp
+            © <span id="currentYear"></span>
+            Hotel Jatashankar
         </span>
 
-    </a>
-
-
-
-    <!-- =====================================================
-         FOOTER
-    ====================================================== -->
-
-    <footer class="site-footer">
-
-        <div class="footer-inner">
-
-            <div class="footer-brand">
-
-                <div class="brand-icon">
-                    <i class="fa-solid fa-utensils"></i>
-                </div>
-
-                <div>
-
-                    <strong>
-                        Hotel Jatashankar
-                    </strong>
-
-                    <span>
-                        Chhatarpur, Madhya Pradesh
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div class="footer-divider"></div>
-
-
-            <p>
-                © <span id="currentYear"></span>
-                Hotel Jatashankar.
-                All rights reserved.
-            </p>
-
-
-            <span class="demo-label">
-                Digital Menu Demo
-            </span>
-
-        </div>
-
-    </footer>
-
-
-
-    <!-- =====================================================
-         TOAST NOTIFICATION
-    ====================================================== -->
-
-    <div
-        class="toast"
-        id="toast"
-        role="status"
-        aria-live="polite"
-    >
-
-        <i class="fa-solid fa-circle-check"></i>
-
-        <span id="toastMessage">
-            Added to cart
+        <span>
+            Digital Menu Demo
         </span>
 
     </div>
 
+</footer>
 
 
-    <!-- =====================================================
-         BACK TO TOP
-    ====================================================== -->
+<!-- =====================================================
+     FLOATING WHATSAPP
+===================================================== -->
 
-    <button
-        class="back-to-top"
-        id="backToTop"
-        type="button"
-        aria-label="Back to top"
-    >
+<a
+    href="https://wa.me/919999999999"
+    class="floating-whatsapp"
+    id="floatingWhatsapp"
+    target="_blank"
+    rel="noopener"
+    aria-label="WhatsApp"
+>
+    WhatsApp
+</a>
 
-        <i class="fa-solid fa-arrow-up"></i>
 
-    </button>
-
-
-
-    <!-- Main JavaScript -->
-    <script src="script.js"></script>
+<!-- JavaScript -->
+<script src="script.js"></script>
 
 </body>
 </html>
