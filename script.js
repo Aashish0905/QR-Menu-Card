@@ -1,1494 +1,1314 @@
-/* =====================================================
-   HOTEL JATASHANKAR DIGITAL QR MENU
-===================================================== */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    /* =================================================
-       CONFIG
-    ================================================= */
-
-    const MENU_URL =
-        "https://aashish0905.github.io/QR-Menu-Card/";
-
-    /*
-      IMPORTANT:
-      Replace this demo number with the hotel's
-      real WhatsApp number.
-
-      Example:
-      917000000000
-    */
-
-    const WHATSAPP_NUMBER =
-        "919999999999";
-
-
-    /* =================================================
-       MENU DATA
-    ================================================= */
-
-    const menuItems = [
-
-        {
-            id: 1,
-            name: "Paneer Tikka",
-            category: "starters",
-            price: 220,
-            emoji: "🥘",
-            description: "Soft paneer with aromatic spices."
-        },
-
-        {
-            id: 2,
-            name: "Veg Manchurian",
-            category: "chinese",
-            price: 180,
-            emoji: "🥢",
-            description: "Crispy vegetable balls in Manchurian sauce."
-        },
-
-        {
-            id: 3,
-            name: "Paneer Butter Masala",
-            category: "north-indian",
-            price: 240,
-            emoji: "🍛",
-            description: "Creamy tomato gravy with soft paneer."
-        },
-
-        {
-            id: 4,
-            name: "Dal Tadka",
-            category: "north-indian",
-            price: 160,
-            emoji: "🥣",
-            description: "Yellow dal tempered with Indian spices."
-        },
-
-        {
-            id: 5,
-            name: "Butter Naan",
-            category: "breads",
-            price: 45,
-            emoji: "🫓",
-            description: "Soft naan topped with butter."
-        },
-
-        {
-            id: 6,
-            name: "Garlic Naan",
-            category: "breads",
-            price: 60,
-            emoji: "🫓",
-            description: "Tandoori naan with garlic and coriander."
-        },
-
-        {
-            id: 7,
-            name: "Veg Fried Rice",
-            category: "rice",
-            price: 180,
-            emoji: "🍚",
-            description: "Fragrant rice tossed with fresh vegetables."
-        },
-
-        {
-            id: 8,
-            name: "Jeera Rice",
-            category: "rice",
-            price: 130,
-            emoji: "🍚",
-            description: "Basmati rice tempered with cumin."
-        },
+/* =========================================================
+   AASHISH SANDWICH™
+   DIGITAL QR MENU + WHATSAPP ORDERING + BILLING
+========================================================= */
 
-        {
-            id: 9,
-            name: "Cold Coffee",
-            category: "beverages",
-            price: 120,
-            emoji: "🥤",
-            description: "Creamy chilled coffee."
-        },
 
-        {
-            id: 10,
-            name: "Fresh Lime Soda",
-            category: "beverages",
-            price: 80,
-            emoji: "🍋",
-            description: "Refreshing lemon soda."
-        },
+/* =========================
+   SETTINGS
+========================= */
 
-        {
-            id: 11,
-            name: "Gulab Jamun",
-            category: "desserts",
-            price: 90,
-            emoji: "🍮",
-            description: "Soft gulab jamun served warm."
-        },
+const MENU_URL =
+  window.location.href.split("#")[0];
 
-        {
-            id: 12,
-            name: "Ice Cream",
-            category: "desserts",
-            price: 100,
-            emoji: "🍨",
-            description: "Creamy chilled ice cream."
-        }
+const WHATSAPP_NUMBER =
+  "919074755317";
 
-    ];
+/*
+   Demo charge.
 
+   0 = no tax/charge
+   0.05 = 5%
 
-    /* =================================================
-       DOM
-    ================================================= */
+   Important:
+   This is only a demo "Tax / Charges" value.
+   Do not present it as GST unless properly configured.
+*/
+const TAX_RATE = 0.05;
 
-    const menuGrid =
-        document.getElementById("menuGrid");
 
-    const searchInput =
-        document.getElementById("menuSearch");
+/* =========================
+   MENU DATA
+========================= */
 
-    const clearSearch =
-        document.getElementById("clearSearch");
+const menu = [
 
-    const categoryButtons =
-        document.querySelectorAll(".category-btn");
+  {
+    id: 1,
 
-    const noResults =
-        document.getElementById("noResults");
+    name:
+      "Paneer Sweet Corn Cheese Sandwich",
 
-    const resetMenu =
-        document.getElementById("resetMenu");
+    category:
+      "sandwich",
 
-    const cartOpenBtn =
-        document.getElementById("cartOpenBtn");
+    price:
+      129,
 
-    const cartCloseBtn =
-        document.getElementById("cartCloseBtn");
+    desc:
+      "Grilled sandwich loaded with paneer, sweet corn and melted cheese.",
 
-    const cartDrawer =
-        document.getElementById("cartDrawer");
+    badge:
+      "BEST SELLER",
 
-    const cartOverlay =
-        document.getElementById("cartOverlay");
+    image:
+      "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=700&q=82"
+  },
 
-    const cartItemsContainer =
-        document.getElementById("cartItems");
 
-    const cartCount =
-        document.getElementById("cartCount");
+  {
+    id: 2,
 
-    const emptyCart =
-        document.getElementById("emptyCart");
+    name:
+      "Classic Cheese Sandwich",
 
-    const cartFooter =
-        document.getElementById("cartFooter");
+    category:
+      "sandwich",
 
-    const cartSubtotal =
-        document.getElementById("cartSubtotal");
+    price:
+      99,
 
-    const cartTax =
-        document.getElementById("cartTax");
+    desc:
+      "Crispy grilled bread with creamy, melty cheese filling.",
 
-    const cartTotal =
-        document.getElementById("cartTotal");
+    badge:
+      "POPULAR",
 
-    const checkoutBtn =
-        document.getElementById("checkoutBtn");
+    image:
+      "https://images.unsplash.com/photo-1481070414801-51fd732d7184?auto=format&fit=crop&w=700&q=82"
+  },
 
-    const startOrdering =
-        document.getElementById("startOrdering");
 
-    const checkoutModal =
-        document.getElementById("checkoutModal");
+  {
+    id: 3,
 
-    const checkoutCloseBtn =
-        document.getElementById("checkoutCloseBtn");
+    name:
+      "Veg Grilled Sandwich",
 
-    const checkoutForm =
-        document.getElementById("checkoutForm");
+    category:
+      "sandwich",
 
-    const checkoutItems =
-        document.getElementById("checkoutItems");
+    price:
+      89,
 
-    const checkoutTotal =
-        document.getElementById("checkoutTotal");
+    desc:
+      "Fresh vegetables, herbs and cheese in a crispy grilled sandwich.",
 
-    const successModal =
-        document.getElementById("successModal");
+    badge:
+      "",
 
-    const successCloseBtn =
-        document.getElementById("successCloseBtn");
+    image:
+      "https://images.unsplash.com/photo-1521390188846-e2a3a97453a0?auto=format&fit=crop&w=700&q=82"
+  },
 
-    const successWhatsappBtn =
-        document.getElementById("successWhatsappBtn");
 
-    const orderIdElement =
-        document.getElementById("orderId");
+  {
+    id: 4,
 
-    const toast =
-        document.getElementById("toast");
+    name:
+      "Cold Coffee",
 
-    const toastMessage =
-        document.getElementById("toastMessage");
+    category:
+      "drinks",
 
+    price:
+      89,
 
-    /* =================================================
-       CART
-    ================================================= */
+    desc:
+      "Creamy chilled cold coffee — the perfect pairing for your sandwich.",
 
-    let cart =
-        JSON.parse(
-            localStorage.getItem("hotelJatashankarCart")
-        ) || [];
+    badge:
+      "COLD & CREAMY",
 
+    image:
+      "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=700&q=82"
+  },
 
-    let selectedCategory = "all";
 
-    let lastOrderMessage = "";
+  {
+    id: 5,
 
+    name:
+      "Chocolate Cold Coffee",
 
-    /* =================================================
-       SAVE CART
-    ================================================= */
+    category:
+      "drinks",
 
-    function saveCart() {
+    price:
+      109,
 
-        localStorage.setItem(
-            "hotelJatashankarCart",
-            JSON.stringify(cart)
-        );
+    desc:
+      "Rich chocolate and chilled coffee blended into a smooth treat.",
 
-    }
+    badge:
+      "",
 
+    image:
+      "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=700&q=82"
+  },
 
-    /* =================================================
-       FORMAT PRICE
-    ================================================= */
 
-    function money(amount) {
+  {
+    id: 6,
 
-        return "₹" +
-            Number(amount).toLocaleString("en-IN");
+    name:
+      "Sandwich + Cold Coffee Combo",
 
-    }
+    category:
+      "combos",
 
+    price:
+      199,
 
-    /* =================================================
-       RENDER MENU
-    ================================================= */
+    desc:
+      "Your favourite grilled sandwich paired with a chilled cold coffee.",
 
-    function renderMenu() {
+    badge:
+      "COMBO",
 
-        const searchTerm =
-            searchInput.value
-                .trim()
-                .toLowerCase();
+    image:
+      "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=700&q=82"
+  },
 
 
-        const filtered =
-            menuItems.filter(item => {
+  {
+    id: 7,
 
-                const matchesCategory =
-                    selectedCategory === "all" ||
-                    item.category === selectedCategory;
+    name:
+      "Extra Cheese",
 
+    category:
+      "addons",
 
-                const matchesSearch =
-                    item.name
-                        .toLowerCase()
-                        .includes(searchTerm);
+    price:
+      20,
 
+    desc:
+      "Add extra cheese to make your sandwich even more indulgent.",
 
-                return (
-                    matchesCategory &&
-                    matchesSearch
-                );
+    badge:
+      "ADD-ON",
 
-            });
+    image:
+      "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?auto=format&fit=crop&w=700&q=82"
+  },
 
 
-        menuGrid.innerHTML = "";
+  {
+    id: 8,
 
+    name:
+      "Extra Filling",
 
-        if (filtered.length === 0) {
+    category:
+      "addons",
 
-            noResults.classList.add("show");
+    price:
+      20,
 
-            return;
+    desc:
+      "Add extra filling to your favourite sandwich.",
 
-        }
+    badge:
+      "ADD-ON",
 
+    image:
+      "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=700&q=82"
+  }
 
-        noResults.classList.remove("show");
+];
 
 
-        filtered.forEach(item => {
+/* =========================
+   CART
+========================= */
 
-            const card =
-                document.createElement("article");
+let cart =
+  JSON.parse(
+    localStorage.getItem(
+      "aashishSandwichCart"
+    ) || "[]"
+  );
 
-            card.className = "menu-card";
 
-            card.innerHTML = `
+/* =========================
+   HELPERS
+========================= */
 
-                <div class="food-image">
-                    ${item.emoji}
-                </div>
+const $ =
+  selector =>
+    document.querySelector(selector);
 
-                <div class="food-content">
+const $$ =
+  selector =>
+    [...document.querySelectorAll(selector)];
 
-                    <span class="food-tag">
-                        ${formatCategory(item.category)}
-                    </span>
+const money =
+  number =>
+    `₹${Math.round(number).toLocaleString("en-IN")}`;
 
-                    <div class="food-title-row">
 
-                        <h3>
-                            ${item.name}
-                        </h3>
+/* =========================
+   SAVE CART
+========================= */
 
-                        <span class="food-price">
-                            ${money(item.price)}
-                        </span>
+function saveCart() {
 
-                    </div>
+  localStorage.setItem(
+    "aashishSandwichCart",
+    JSON.stringify(cart)
+  );
 
-                    <p class="food-description">
-                        ${item.description}
-                    </p>
+}
 
-                    <button
-                        class="add-to-cart"
-                        data-id="${item.id}"
-                        type="button"
-                    >
-                        + Add to Cart
-                    </button>
 
-                </div>
+/* =========================
+   CART QUANTITY
+========================= */
 
-            `;
+function cartQty() {
 
+  return cart.reduce(
+    (total, item) =>
+      total + item.qty,
+    0
+  );
 
-            menuGrid.appendChild(card);
+}
 
-        });
 
-    }
+/* =========================
+   RENDER MENU
+========================= */
 
+function renderMenu() {
 
-    /* =================================================
-       CATEGORY NAME
-    ================================================= */
+  const grid =
+    $("#menuGrid");
 
-    function formatCategory(category) {
+  const search =
+    ($("#searchInput").value || "")
+      .toLowerCase()
+      .trim();
 
-        const names = {
+  const active =
+    $(".category.active")?.dataset.category ||
+    "all";
 
-            "starters": "Starters",
 
-            "north-indian": "North Indian",
+  const filtered =
+    menu.filter(item => {
 
-            "chinese": "Chinese",
+      const categoryMatch =
+        active === "all" ||
+        item.category === active;
 
-            "breads": "Breads",
 
-            "rice": "Rice",
+      const searchMatch =
+        !search ||
+        `${item.name} ${item.desc}`
+          .toLowerCase()
+          .includes(search);
 
-            "beverages": "Beverages",
 
-            "desserts": "Desserts"
-
-        };
-
-        return names[category] || category;
-
-    }
-
-
-    /* =================================================
-       ADD TO CART
-    ================================================= */
-
-    function addToCart(id) {
-
-        const item =
-            menuItems.find(
-                product => product.id === id
-            );
-
-
-        if (!item) return;
-
-
-        const existing =
-            cart.find(
-                product => product.id === id
-            );
-
-
-        if (existing) {
-
-            existing.quantity += 1;
-
-        } else {
-
-            cart.push({
-
-                id: item.id,
-
-                name: item.name,
-
-                price: item.price,
-
-                quantity: 1
-
-            });
-
-        }
-
-
-        saveCart();
-
-        updateCart();
-
-        showToast(
-            `${item.name} added to cart`
-        );
-
-    }
-
-
-    /* =================================================
-       REMOVE / QUANTITY
-    ================================================= */
-
-    function changeQuantity(id, amount) {
-
-        const item =
-            cart.find(
-                product => product.id === id
-            );
-
-
-        if (!item) return;
-
-
-        item.quantity += amount;
-
-
-        if (item.quantity <= 0) {
-
-            cart =
-                cart.filter(
-                    product => product.id !== id
-                );
-
-        }
-
-
-        saveCart();
-
-        updateCart();
-
-    }
-
-
-    /* =================================================
-       CART TOTALS
-    ================================================= */
-
-    function getSubtotal() {
-
-        return cart.reduce(
-            (total, item) =>
-                total +
-                item.price * item.quantity,
-            0
-        );
-
-    }
-
-
-    function getTax() {
-
-        /*
-          Demo tax:
-          5%
-        */
-
-        return Math.round(
-            getSubtotal() * 0.05
-        );
-
-    }
-
-
-    function getTotal() {
-
-        return getSubtotal() + getTax();
-
-    }
-
-
-    /* =================================================
-       UPDATE CART
-    ================================================= */
-
-    function updateCart() {
-
-        const quantity =
-            cart.reduce(
-                (total, item) =>
-                    total + item.quantity,
-                0
-            );
-
-
-        cartCount.textContent =
-            quantity;
-
-
-        cartItemsContainer.innerHTML = "";
-
-
-        if (cart.length === 0) {
-
-            emptyCart.classList.add("show");
-
-            cartFooter.style.display = "none";
-
-            return;
-
-        }
-
-
-        emptyCart.classList.remove("show");
-
-        cartFooter.style.display = "block";
-
-
-        cart.forEach(item => {
-
-            const element =
-                document.createElement("div");
-
-            element.className = "cart-item";
-
-
-            element.innerHTML = `
-
-                <div class="cart-item-info">
-
-                    <h4>
-                        ${item.name}
-                    </h4>
-
-                    <p>
-                        ${money(
-                            item.price * item.quantity
-                        )}
-                    </p>
-
-                </div>
-
-
-                <div class="cart-controls">
-
-                    <button
-                        type="button"
-                        data-action="minus"
-                        data-id="${item.id}"
-                    >
-                        −
-                    </button>
-
-                    <span>
-                        ${item.quantity}
-                    </span>
-
-                    <button
-                        type="button"
-                        data-action="plus"
-                        data-id="${item.id}"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-            `;
-
-
-            cartItemsContainer.appendChild(element);
-
-        });
-
-
-        const subtotal =
-            getSubtotal();
-
-        const tax =
-            getTax();
-
-        const total =
-            getTotal();
-
-
-        cartSubtotal.textContent =
-            money(subtotal);
-
-        cartTax.textContent =
-            money(tax);
-
-        cartTotal.textContent =
-            money(total);
-
-    }
-
-
-    /* =================================================
-       CART EVENTS
-    ================================================= */
-
-    menuGrid.addEventListener(
-        "click",
-        event => {
-
-            const button =
-                event.target.closest(
-                    ".add-to-cart"
-                );
-
-
-            if (!button) return;
-
-
-            addToCart(
-                Number(button.dataset.id)
-            );
-
-        }
-    );
-
-
-    cartItemsContainer.addEventListener(
-        "click",
-        event => {
-
-            const button =
-                event.target.closest("button");
-
-
-            if (!button) return;
-
-
-            const id =
-                Number(button.dataset.id);
-
-
-            if (
-                button.dataset.action === "plus"
-            ) {
-
-                changeQuantity(id, 1);
-
-            }
-
-
-            if (
-                button.dataset.action === "minus"
-            ) {
-
-                changeQuantity(id, -1);
-
-            }
-
-        }
-    );
-
-
-    /* =================================================
-       OPEN CART
-    ================================================= */
-
-    function openCart() {
-
-        cartDrawer.classList.add("active");
-
-        cartOverlay.classList.add("active");
-
-        document.body.style.overflow = "hidden";
-
-    }
-
-
-    function closeCart() {
-
-        cartDrawer.classList.remove("active");
-
-        cartOverlay.classList.remove("active");
-
-        document.body.style.overflow = "";
-
-    }
-
-
-    cartOpenBtn.addEventListener(
-        "click",
-        openCart
-    );
-
-
-    cartCloseBtn.addEventListener(
-        "click",
-        closeCart
-    );
-
-
-    cartOverlay.addEventListener(
-        "click",
-        closeCart
-    );
-
-
-    startOrdering.addEventListener(
-        "click",
-        () => {
-
-            closeCart();
-
-            document
-                .getElementById("menu")
-                .scrollIntoView({
-                    behavior: "smooth"
-                });
-
-        }
-    );
-
-
-    /* =================================================
-       SEARCH
-    ================================================= */
-
-    searchInput.addEventListener(
-        "input",
-        renderMenu
-    );
-
-
-    clearSearch.addEventListener(
-        "click",
-        () => {
-
-            searchInput.value = "";
-
-            renderMenu();
-
-            searchInput.focus();
-
-        }
-    );
-
-
-    /* =================================================
-       CATEGORY
-    ================================================= */
-
-    categoryButtons.forEach(button => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                categoryButtons.forEach(btn =>
-                    btn.classList.remove("active")
-                );
-
-
-                button.classList.add("active");
-
-
-                selectedCategory =
-                    button.dataset.category;
-
-
-                renderMenu();
-
-            }
-        );
+      return (
+        categoryMatch &&
+        searchMatch
+      );
 
     });
 
 
-    resetMenu.addEventListener(
-        "click",
-        () => {
+  grid.innerHTML =
+    filtered.map(item => `
 
-            selectedCategory = "all";
+      <article class="menu-card">
 
-            searchInput.value = "";
+        <div class="food-image">
 
+          <img
+            src="${item.image}"
+            alt="${item.name}"
+            loading="lazy"
+          >
 
-            categoryButtons.forEach(btn =>
-                btn.classList.remove("active")
-            );
-
-
-            document
-                .querySelector(
-                    '.category-btn[data-category="all"]'
-                )
-                .classList.add("active");
-
-
-            renderMenu();
-
-        }
-    );
-
-
-    /* =================================================
-       CHECKOUT
-    ================================================= */
-
-    checkoutBtn.addEventListener(
-        "click",
-        () => {
-
-            if (cart.length === 0) {
-
-                showToast(
-                    "Your cart is empty"
-                );
-
-                return;
-
-            }
-
-
-            renderCheckout();
-
-            checkoutModal.classList.add("active");
-
-        }
-    );
-
-
-    checkoutCloseBtn.addEventListener(
-        "click",
-        () => {
-
-            checkoutModal.classList.remove(
-                "active"
-            );
-
-        }
-    );
-
-
-    /* =================================================
-       CHECKOUT SUMMARY
-    ================================================= */
-
-    function renderCheckout() {
-
-        checkoutItems.innerHTML = "";
-
-
-        cart.forEach(item => {
-
-            const row =
-                document.createElement("div");
-
-            row.className =
-                "checkout-item";
-
-
-            row.innerHTML = `
-
-                <span>
-                    ${item.name}
-                    × ${item.quantity}
+          ${
+            item.badge
+              ? `
+                <span class="badge">
+                  ${item.badge}
                 </span>
+              `
+              : ""
+          }
 
-                <strong>
-                    ${money(
-                        item.price *
-                        item.quantity
-                    )}
-                </strong>
-
-            `;
+        </div>
 
 
-            checkoutItems.appendChild(row);
+        <div class="menu-info">
 
-        });
+          <h3>
+            ${item.name}
+          </h3>
+
+          <p>
+            ${item.desc}
+          </p>
 
 
-        checkoutTotal.textContent =
-            money(getTotal());
+          <div class="menu-bottom">
+
+            <strong class="price">
+              ${money(item.price)}
+            </strong>
+
+            <button
+              class="add-btn"
+              data-add="${item.id}"
+            >
+              Add +
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    `).join("");
+
+
+  $("#emptyState").style.display =
+    filtered.length
+      ? "none"
+      : "block";
+
+}
+
+
+/* =========================
+   ADD TO CART
+========================= */
+
+function addToCart(id) {
+
+  const item =
+    menu.find(
+      x => x.id === id
+    );
+
+  if (!item) return;
+
+
+  const existing =
+    cart.find(
+      x => x.id === id
+    );
+
+
+  if (existing) {
+
+    existing.qty++;
+
+  } else {
+
+    cart.push({
+      id: item.id,
+      qty: 1
+    });
+
+  }
+
+
+  saveCart();
+
+  renderCart();
+
+  showToast(
+    `${item.name} added to cart`
+  );
+
+}
+
+
+/* =========================
+   CHANGE QUANTITY
+========================= */
+
+function changeQty(
+  id,
+  delta
+) {
+
+  const item =
+    cart.find(
+      x => x.id === id
+    );
+
+  if (!item) return;
+
+
+  item.qty += delta;
+
+
+  if (item.qty <= 0) {
+
+    cart =
+      cart.filter(
+        x => x.id !== id
+      );
+
+  }
+
+
+  saveCart();
+
+  renderCart();
+
+}
+
+
+/* =========================
+   REMOVE ITEM
+========================= */
+
+function removeItem(id) {
+
+  cart =
+    cart.filter(
+      x => x.id !== id
+    );
+
+
+  saveCart();
+
+  renderCart();
+
+}
+
+
+/* =========================
+   TOTALS
+========================= */
+
+function totals() {
+
+  const subtotal =
+    cart.reduce(
+      (sum, row) => {
+
+        const item =
+          menu.find(
+            x => x.id === row.id
+          );
+
+        return (
+          sum +
+          item.price *
+          row.qty
+        );
+
+      },
+      0
+    );
+
+
+  const tax =
+    Math.round(
+      subtotal * TAX_RATE
+    );
+
+
+  const total =
+    subtotal + tax;
+
+
+  return {
+    subtotal,
+    tax,
+    total
+  };
+
+}
+
+
+/* =========================
+   RENDER CART
+========================= */
+
+function renderCart() {
+
+  const items =
+    $("#cartItems");
+
+  const empty =
+    $("#cartEmpty");
+
+  const summary =
+    $("#cartSummary");
+
+
+  const count =
+    cartQty();
+
+
+  $$(".cart-count")
+    .forEach(
+      element => {
+        element.textContent =
+          count;
+      }
+    );
+
+
+  if (!cart.length) {
+
+    items.innerHTML = "";
+
+    empty.style.display =
+      "block";
+
+    summary.style.display =
+      "none";
+
+    return;
+
+  }
+
+
+  empty.style.display =
+    "none";
+
+  summary.style.display =
+    "block";
+
+
+  items.innerHTML =
+    cart.map(row => {
+
+      const item =
+        menu.find(
+          x => x.id === row.id
+        );
+
+
+      return `
+
+        <div class="cart-row">
+
+          <img
+            src="${item.image}"
+            alt="${item.name}"
+          >
+
+
+          <div>
+
+            <h4>
+              ${item.name}
+            </h4>
+
+            <small>
+              ${money(item.price)}
+              × ${row.qty}
+            </small>
+
+
+            <div class="qty">
+
+              <button
+                data-minus="${item.id}"
+              >
+                −
+              </button>
+
+
+              <strong>
+                ${row.qty}
+              </strong>
+
+
+              <button
+                data-plus="${item.id}"
+              >
+                +
+              </button>
+
+
+              <button
+                class="remove"
+                data-remove="${item.id}"
+              >
+                Remove
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <strong>
+            ${money(
+              item.price *
+              row.qty
+            )}
+          </strong>
+
+        </div>
+
+      `;
+
+    }).join("");
+
+
+  const total =
+    totals();
+
+
+  $("#subtotal").textContent =
+    money(total.subtotal);
+
+  $("#tax").textContent =
+    money(total.tax);
+
+  $("#grandTotal").textContent =
+    money(total.total);
+
+  $("#checkoutTotal").textContent =
+    money(total.total);
+
+}
+
+
+/* =========================
+   CART OPEN
+========================= */
+
+function openCart() {
+
+  $("#cartDrawer")
+    .classList
+    .add("open");
+
+
+  $("#overlay")
+    .classList
+    .add("show");
+
+
+  $("#cartDrawer")
+    .setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+}
+
+
+/* =========================
+   CART CLOSE
+========================= */
+
+function closeCart() {
+
+  $("#cartDrawer")
+    .classList
+    .remove("open");
+
+
+  $("#overlay")
+    .classList
+    .remove("show");
+
+
+  $("#cartDrawer")
+    .setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+}
+
+
+/* =========================
+   MODALS
+========================= */
+
+function openModal(id) {
+
+  $(id)
+    .classList
+    .add("show");
+
+}
+
+
+function closeModals() {
+
+  $$(".modal-wrap")
+    .forEach(
+      modal =>
+        modal.classList
+          .remove("show")
+    );
+
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+function showToast(text) {
+
+  const toast =
+    $("#toast");
+
+
+  toast.textContent =
+    text;
+
+
+  toast.classList
+    .add("show");
+
+
+  setTimeout(
+    () =>
+      toast.classList
+        .remove("show"),
+    2600
+  );
+
+}
+
+
+/* =========================
+   QR GENERATOR
+========================= */
+
+function generateQr(
+  target,
+  size
+) {
+
+  target.innerHTML = "";
+
+
+  new QRCode(
+    target,
+    {
+      text: MENU_URL,
+
+      width: size,
+
+      height: size,
+
+      colorDark:
+        "#111111",
+
+      colorLight:
+        "#ffffff",
+
+      correctLevel:
+        QRCode.CorrectLevel.H
+    }
+  );
+
+}
+
+
+/* =========================
+   WHATSAPP MESSAGE
+========================= */
+
+function createOrderMessage() {
+
+  const name =
+    $("#customerName")
+      .value
+      .trim();
+
+
+  const mobile =
+    $("#customerMobile")
+      .value
+      .trim();
+
+
+  const table =
+    $("#tableNo")
+      .value
+      .trim() ||
+    "Not specified";
+
+
+  const type =
+    $("#orderType")
+      .value;
+
+
+  const note =
+    $("#customerNote")
+      .value
+      .trim() ||
+    "None";
+
+
+  const payment =
+    document.querySelector(
+      'input[name="payment"]:checked'
+    ).value;
+
+
+  const total =
+    totals();
+
+
+  const orderId =
+    "AS" +
+    Date.now()
+      .toString()
+      .slice(-6);
+
+
+  const itemLines =
+    cart.map(row => {
+
+      const item =
+        menu.find(
+          x => x.id === row.id
+        );
+
+
+      return (
+        `• ${item.name} × ${row.qty} = ` +
+        `${money(item.price * row.qty)}`
+      );
+
+    }).join("\n");
+
+
+  const message = [
+
+    "*AASHISH SANDWICH™ - NEW ORDER*",
+
+    "",
+
+    `*Order ID:* ${orderId}`,
+
+    `*Name:* ${name}`,
+
+    `*Mobile:* ${mobile}`,
+
+    `*Table:* ${table}`,
+
+    `*Order Type:* ${type}`,
+
+    `*Payment:* ${payment}`,
+
+    "",
+
+    "*Items:*",
+
+    itemLines,
+
+    "",
+
+    `*Subtotal:* ${money(total.subtotal)}`,
+
+    `*Tax/Charges:* ${money(total.tax)}`,
+
+    `*TOTAL:* ${money(total.total)}`,
+
+    "",
+
+    `*Note:* ${note}`,
+
+    "",
+
+    "Thank you! ❤️"
+
+  ].join("\n");
+
+
+  return message;
+
+}
+
+
+/* =========================
+   GLOBAL CLICK HANDLER
+========================= */
+
+document.addEventListener(
+  "click",
+  event => {
+
+    const add =
+      event.target
+        .closest("[data-add]");
+
+
+    if (add) {
+
+      addToCart(
+        Number(
+          add.dataset.add
+        )
+      );
 
     }
 
 
-    /* =================================================
-       PLACE ORDER
-    ================================================= */
+    const plus =
+      event.target
+        .closest("[data-plus]");
 
-    checkoutForm.addEventListener(
-        "submit",
-        event => {
 
-            event.preventDefault();
+    if (plus) {
 
+      changeQty(
+        Number(
+          plus.dataset.plus
+        ),
+        1
+      );
 
-            if (cart.length === 0) {
+    }
 
-                showToast(
-                    "Please add items first"
-                );
 
-                return;
+    const minus =
+      event.target
+        .closest("[data-minus]");
 
-            }
 
+    if (minus) {
 
-            const name =
-                document
-                    .getElementById(
-                        "customerName"
-                    )
-                    .value
-                    .trim();
+      changeQty(
+        Number(
+          minus.dataset.minus
+        ),
+        -1
+      );
 
+    }
 
-            const phone =
-                document
-                    .getElementById(
-                        "customerPhone"
-                    )
-                    .value
-                    .trim();
 
+    const remove =
+      event.target
+        .closest("[data-remove]");
 
-            const address =
-                document
-                    .getElementById(
-                        "customerAddress"
-                    )
-                    .value
-                    .trim();
 
+    if (remove) {
 
-            const orderType =
-                document.querySelector(
-                    'input[name="orderType"]:checked'
-                ).value;
+      removeItem(
+        Number(
+          remove.dataset.remove
+        )
+      );
 
+    }
 
-            const payment =
-                document.querySelector(
-                    'input[name="payment"]:checked'
-                ).value;
 
-
-            if (!/^[0-9]{10}$/.test(phone)) {
-
-                alert(
-                    "Please enter a valid 10 digit mobile number."
-                );
-
-                return;
-
-            }
-
-
-            const orderID =
-                "HJ" +
-                Date.now()
-                    .toString()
-                    .slice(-6);
-
-
-            const itemLines =
-                cart.map(item => {
-
-                    return (
-                        `• ${item.name} x ${item.quantity}` +
-                        ` = ${money(
-                            item.price *
-                            item.quantity
-                        )}`
-                    );
-
-                }).join("\n");
-
-
-            lastOrderMessage =
-
-                `*Hotel Jatashankar Order*\n\n` +
-
-                `Order ID: ${orderID}\n` +
-
-                `Name: ${name}\n` +
-
-                `Phone: ${phone}\n` +
-
-                `Order Type: ${orderType}\n` +
-
-                `Address/Table: ${
-                    address || "Not provided"
-                }\n\n` +
-
-                `*Items:*\n` +
-
-                `${itemLines}\n\n` +
-
-                `Subtotal: ${money(
-                    getSubtotal()
-                )}\n` +
-
-                `Tax: ${money(
-                    getTax()
-                )}\n` +
-
-                `*Total: ${money(
-                    getTotal()
-                )}*\n\n` +
-
-                `Payment: ${payment}`;
-
-
-            orderIdElement.textContent =
-                orderID;
-
-
-            checkoutModal.classList.remove(
-                "active"
-            );
-
-
-            closeCart();
-
-
-            successModal.classList.add(
-                "active"
-            );
-
-
-            localStorage.setItem(
-                "lastHotelOrder",
-                JSON.stringify({
-                    orderID,
-                    name,
-                    phone,
-                    address,
-                    orderType,
-                    payment,
-                    cart,
-                    total: getTotal()
-                })
-            );
-
-
-            /*
-              Keep cart after order for demo.
-              You can clear it after successful backend order.
-            */
-
-        }
-    );
-
-
-    /* =================================================
-       WHATSAPP ORDER
-    ================================================= */
-
-    successWhatsappBtn.addEventListener(
-        "click",
-        () => {
-
-            const url =
-                `https://wa.me/${WHATSAPP_NUMBER}` +
-                `?text=${encodeURIComponent(
-                    lastOrderMessage
-                )}`;
-
-
-            window.open(
-                url,
-                "_blank",
-                "noopener"
-            );
-
-        }
-    );
-
-
-    successCloseBtn.addEventListener(
-        "click",
-        () => {
-
-            successModal.classList.remove(
-                "active"
-            );
-
-        }
-    );
-
-
-    /* =================================================
-       QR CODE
-    ================================================= */
-
-    function generateQR(
-        containerID,
-        size = 250
+    if (
+      event.target
+        .closest(".cart-open")
     ) {
 
-        const container =
-            document.getElementById(
-                containerID
-            );
-
-
-        if (!container) return;
-
-
-        container.innerHTML = "";
-
-
-        if (
-            typeof QRCode ===
-            "undefined"
-        ) {
-
-            container.innerHTML = `
-                <p style="
-                    color:#777;
-                    font-size:12px;
-                ">
-                    QR loading...
-                </p>
-            `;
-
-            return;
-
-        }
-
-
-        new QRCode(
-            container,
-            {
-                text: MENU_URL,
-
-                width: size,
-                height: size,
-
-                colorDark: "#111111",
-
-                colorLight: "#ffffff",
-
-                correctLevel:
-                    QRCode.CorrectLevel.H
-            }
-        );
+      openCart();
 
     }
 
 
-    /*
-      Main QR
-    */
-
-    generateQR(
-        "qrCode",
-        250
-    );
-
-
-    /* =================================================
-       QR POPUP
-    ================================================= */
-
-    const qrModal =
-        document.getElementById("qrModal");
-
-    const openQRBtn =
-        document.getElementById("openQRBtn");
-
-    const heroQRBtn =
-        document.getElementById("heroQRBtn");
-
-    const footerQRBtn =
-        document.getElementById("footerQRBtn");
-
-    const qrModalClose =
-        document.getElementById("qrModalClose");
-
-    const downloadPopupQR =
-        document.getElementById(
-            "downloadPopupQR"
-        );
-
-
-    function openQRModal() {
-
-        generateQR(
-            "popupQR",
-            230
-        );
-
-        qrModal.classList.add(
-            "active"
-        );
-
-    }
-
-
-    function closeQRModal() {
-
-        qrModal.classList.remove(
-            "active"
-        );
-
-    }
-
-
-    openQRBtn.addEventListener(
-        "click",
-        openQRModal
-    );
-
-
-    heroQRBtn.addEventListener(
-        "click",
-        openQRModal
-    );
-
-
-    footerQRBtn.addEventListener(
-        "click",
-        openQRModal
-    );
-
-
-    qrModalClose.addEventListener(
-        "click",
-        closeQRModal
-    );
-
-
-    /* =================================================
-       DOWNLOAD MAIN QR
-    ================================================= */
-
-    document
-        .getElementById("downloadQRBtn")
-        .addEventListener(
-            "click",
-            () => {
-
-                downloadQR(
-                    "qrCode",
-                    "Hotel-Jatashankar-QR-Menu.png"
-                );
-
-            }
-        );
-
-
-    /* =================================================
-       DOWNLOAD POPUP QR
-    ================================================= */
-
-    downloadPopupQR.addEventListener(
-        "click",
-        () => {
-
-            downloadQR(
-                "popupQR",
-                "Hotel-Jatashankar-QR-Menu.png"
-            );
-
-        }
-    );
-
-
-    function downloadQR(
-        containerID,
-        filename
+    if (
+      event.target
+        .closest("#closeCart") ||
+      event.target
+        .closest(".cart-close") ||
+      event.target ===
+        $("#overlay")
     ) {
 
-        const container =
-            document.getElementById(
-                containerID
-            );
-
-
-        if (!container) return;
-
-
-        const canvas =
-            container.querySelector(
-                "canvas"
-            );
-
-
-        const image =
-            container.querySelector(
-                "img"
-            );
-
-
-        let url = null;
-
-
-        if (canvas) {
-
-            url =
-                canvas.toDataURL(
-                    "image/png"
-                );
-
-        } else if (image) {
-
-            url =
-                image.src;
-
-        }
-
-
-        if (!url) {
-
-            alert(
-                "QR code is not ready yet."
-            );
-
-            return;
-
-        }
-
-
-        const link =
-            document.createElement("a");
-
-
-        link.href = url;
-
-        link.download = filename;
-
-
-        document.body.appendChild(
-            link
-        );
-
-
-        link.click();
-
-
-        document.body.removeChild(
-            link
-        );
+      closeCart();
 
     }
 
 
-    /* =================================================
-       TOAST
-    ================================================= */
+    if (
+      event.target
+        .closest(".modal-close") ||
+      event.target
+        .closest(".qr-close")
+    ) {
 
-    let toastTimer;
-
-
-    function showToast(message) {
-
-        toastMessage.textContent =
-            message;
-
-
-        toast.classList.add(
-            "show"
-        );
-
-
-        clearTimeout(
-            toastTimer
-        );
-
-
-        toastTimer =
-            setTimeout(
-                () => {
-
-                    toast.classList.remove(
-                        "show"
-                    );
-
-                },
-                2500
-            );
+      closeModals();
 
     }
 
+  }
+);
 
-    /* =================================================
-       YEAR
-    ================================================= */
 
-    document
-        .getElementById("currentYear")
+/* =========================
+   CATEGORY FILTER
+========================= */
+
+$$(".category")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        $$(".category")
+          .forEach(
+            item =>
+              item.classList
+                .remove("active")
+          );
+
+
+        button.classList
+          .add("active");
+
+
+        renderMenu();
+
+      }
+    );
+
+  });
+
+
+/* =========================
+   SEARCH
+========================= */
+
+$("#searchInput")
+  .addEventListener(
+    "input",
+    renderMenu
+  );
+
+
+$("#clearSearch")
+  .addEventListener(
+    "click",
+    () => {
+
+      $("#searchInput")
+        .value = "";
+
+      renderMenu();
+
+    }
+  );
+
+
+/* =========================
+   CHECKOUT
+========================= */
+
+$("#checkoutBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      if (!cart.length) {
+
+        showToast(
+          "Your cart is empty"
+        );
+
+        return;
+
+      }
+
+
+      closeCart();
+
+      openModal(
+        "#checkoutModal"
+      );
+
+
+      $("#checkoutTotal")
         .textContent =
-            new Date().getFullYear();
+          money(
+            totals().total
+          );
+
+    }
+  );
 
 
-    /* =================================================
-       ESC KEY
-    ================================================= */
+/* =========================
+   PLACE ORDER
+========================= */
 
-    document.addEventListener(
-        "keydown",
-        event => {
+$("#checkoutForm")
+  .addEventListener(
+    "submit",
+    event => {
 
-            if (event.key !== "Escape") {
-                return;
-            }
-
-
-            closeCart();
+      event.preventDefault();
 
 
-            checkoutModal.classList.remove(
-                "active"
-            );
+      const mobile =
+        $("#customerMobile")
+          .value
+          .trim();
 
 
-            successModal.classList.remove(
-                "active"
-            );
+      if (
+        !/^\d{10}$/.test(
+          mobile
+        )
+      ) {
+
+        showToast(
+          "Please enter a valid 10 digit mobile number"
+        );
+
+        return;
+
+      }
 
 
-            qrModal.classList.remove(
-                "active"
-            );
-
-        }
-    );
+      const message =
+        createOrderMessage();
 
 
-    /* =================================================
-       INITIAL LOAD
-    ================================================= */
+      const whatsappUrl =
+        `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
-    renderMenu();
 
-    updateCart();
+      window.open(
+        whatsappUrl,
+        "_blank"
+      );
 
-});
+
+      showToast(
+        "Opening WhatsApp order..."
+      );
+
+
+      closeModals();
+
+
+      cart = [];
+
+
+      saveCart();
+
+
+      renderCart();
+
+
+      event.target.reset();
+
+    }
+  );
+
+
+/* =========================
+   DEMO PAYMENT
+========================= */
+
+$("#demoPayment")
+  .addEventListener(
+    "click",
+    () => {
+
+      showToast(
+        "Demo payment successful — real gateway can be connected later."
+      );
+
+    }
+  );
+
+
+/* =========================
+   OPEN QR
+========================= */
+
+$("#openQr")
+  .addEventListener(
+    "click",
+    () => {
+
+      openModal(
+        "#qrModal"
+      );
+
+
+      generateQr(
+        $("#qrLarge"),
+        280
+      );
+
+    }
+  );
+
+
+/* =========================
+   DOWNLOAD QR
+========================= */
+
+$("#downloadQr")
+  .addEventListener(
+    "click",
+    () => {
+
+      const canvas =
+        $("#qrLarge canvas");
+
+      const image =
+        $("#qrLarge img");
+
+
+      const source =
+        canvas
+          ? canvas.toDataURL(
+              "image/png"
+            )
+          : image?.src;
+
+
+      if (!source) return;
+
+
+      const link =
+        document.createElement(
+          "a"
+        );
+
+
+      link.href =
+        source;
+
+
+      link.download =
+        "Aashish-Sandwich-QR-Menu.png";
+
+
+      link.click();
+
+    }
+  );
+
+
+/* =========================
+   INITIALIZE
+========================= */
+
+generateQr(
+  $("#qrPreview"),
+  145
+);
+
+renderMenu();
+
+renderCart();
