@@ -1,1966 +1,1494 @@
+/* =====================================================
+   HOTEL JATASHANKAR DIGITAL QR MENU
+===================================================== */
 
-/* =========================================================
-   HOTEL JATASHANKAR
-   PREMIUM DIGITAL MENU
-   script.js
-========================================================= */
+document.addEventListener("DOMContentLoaded", () => {
 
+    /* =================================================
+       CONFIG
+    ================================================= */
 
-/* =========================================================
-   1. MENU DATA
-   ---------------------------------------------------------
-   अगर आपकी HTML में menu cards पहले से हैं तो यह data
-   optional है। नीचे का script HTML cards से भी काम कर सकता है.
-========================================================= */
-
-const menuData = [
-    {
-        id: 1,
-        name: "Paneer Butter Masala",
-        category: "main-course",
-        price: 220,
-        description: "Soft paneer cooked in rich buttery tomato gravy.",
-        image: "images/paneer-butter-masala.jpg",
-        tag: "Popular"
-    },
-
-    {
-        id: 2,
-        name: "Shahi Paneer",
-        category: "main-course",
-        price: 240,
-        description: "Creamy royal paneer gravy with aromatic spices.",
-        image: "images/shahi-paneer.jpg",
-        tag: "Chef Special"
-    },
-
-    {
-        id: 3,
-        name: "Dal Tadka",
-        category: "main-course",
-        price: 160,
-        description: "Yellow dal tempered with garlic, cumin and spices.",
-        image: "images/dal-tadka.jpg",
-        tag: "Popular"
-    },
-
-    {
-        id: 4,
-        name: "Butter Naan",
-        category: "breads",
-        price: 45,
-        description: "Soft tandoori naan finished with melted butter.",
-        image: "images/butter-naan.jpg",
-        tag: ""
-    },
-
-    {
-        id: 5,
-        name: "Tandoori Roti",
-        category: "breads",
-        price: 25,
-        description: "Freshly baked traditional tandoori roti.",
-        image: "images/tandoori-roti.jpg",
-        tag: ""
-    },
-
-    {
-        id: 6,
-        name: "Veg Biryani",
-        category: "rice",
-        price: 190,
-        description: "Fragrant basmati rice with fresh vegetables and spices.",
-        image: "images/veg-biryani.jpg",
-        tag: "Popular"
-    },
-
-    {
-        id: 7,
-        name: "Jeera Rice",
-        category: "rice",
-        price: 130,
-        description: "Aromatic basmati rice tempered with cumin.",
-        image: "images/jeera-rice.jpg",
-        tag: ""
-    },
-
-    {
-        id: 8,
-        name: "Masala Dosa",
-        category: "south-indian",
-        price: 120,
-        description: "Crispy dosa served with masala, sambhar and chutney.",
-        image: "images/masala-dosa.jpg",
-        tag: "Popular"
-    },
-
-    {
-        id: 9,
-        name: "Idli Sambhar",
-        category: "south-indian",
-        price: 90,
-        description: "Soft steamed idlis served with hot sambhar.",
-        image: "images/idli.jpg",
-        tag: ""
-    },
-
-    {
-        id: 10,
-        name: "Veg Manchurian",
-        category: "chinese",
-        price: 180,
-        description: "Crispy vegetable balls tossed in Manchurian sauce.",
-        image: "images/veg-manchurian.jpg",
-        tag: ""
-    },
-
-    {
-        id: 11,
-        name: "Hakka Noodles",
-        category: "chinese",
-        price: 170,
-        description: "Stir-fried noodles with fresh vegetables.",
-        image: "images/hakka-noodles.jpg",
-        tag: "Popular"
-    },
-
-    {
-        id: 12,
-        name: "Cold Coffee",
-        category: "beverages",
-        price: 90,
-        description: "Chilled creamy coffee served fresh.",
-        image: "images/cold-coffee.jpg",
-        tag: ""
-    },
-
-    {
-        id: 13,
-        name: "Fresh Lime Soda",
-        category: "beverages",
-        price: 70,
-        description: "Refreshing lime soda with a perfect sweet-sour balance.",
-        image: "images/lime-soda.jpg",
-        tag: ""
-    },
-
-    {
-        id: 14,
-        name: "Gulab Jamun",
-        category: "desserts",
-        price: 80,
-        description: "Soft warm gulab jamun served with sugar syrup.",
-        image: "images/gulab-jamun.jpg",
-        tag: "Sweet"
-    }
-];
-
-
-/* =========================================================
-   2. GLOBAL STATE
-========================================================= */
-
-let cart = [];
-
-let currentCategory = "all";
-
-let currentSearch = "";
-
-let toastTimer = null;
-
-
-/* =========================================================
-   3. DOM HELPERS
-========================================================= */
-
-const $ = (selector, parent = document) => {
-    return parent.querySelector(selector);
-};
-
-const $$ = (selector, parent = document) => {
-    return [...parent.querySelectorAll(selector)];
-};
-
-
-/* =========================================================
-   4. DOM ELEMENTS
-========================================================= */
-
-const siteHeader = $(".site-header");
-
-const searchContainer = $(".search-container");
-
-const searchInput = $(".search-box input");
-
-const clearSearchBtn = $(".clear-search");
-
-const searchBtn = $(".search-btn");
-
-const categoryButtons = $$(".category-btn");
-
-const menuGrid = $(".menu-grid");
-
-const noResults = $(".no-results");
-
-const cartBtn = $(".cart-btn");
-
-const cartCount = $(".cart-count");
-
-const cartDrawer = $(".cart-drawer");
-
-const cartOverlay = $(".cart-overlay");
-
-const closeCartBtn = $(".close-cart");
-
-const cartItems = $(".cart-items");
-
-const emptyCart = $(".empty-cart");
-
-const cartFooter = $(".cart-footer");
-
-const subtotalElement = $(".cart-subtotal");
-
-const totalElement = $(".cart-total");
-
-const checkoutBtn = $(".checkout-btn");
-
-const checkoutModal = $(".modal-backdrop");
-
-const closeModalBtn = $(".close-modal");
-
-const checkoutForm = $("#checkoutForm");
-
-const checkoutItems = $(".checkout-items");
-
-const checkoutTotal = $(".checkout-total");
-
-const successModal = $(".success-modal");
-
-const successCloseBtn = $(".success-close-btn");
-
-const whatsappSuccessBtn = $(".success-whatsapp-btn");
-
-const toast = $(".toast");
-
-const backToTop = $(".back-to-top");
-
-const floatingWhatsapp = $(".floating-whatsapp");
-
-
-/* =========================================================
-   5. FORMAT CURRENCY
-========================================================= */
-
-function formatPrice(price) {
-    return `₹${Number(price).toLocaleString("en-IN")}`;
-}
-
-
-/* =========================================================
-   6. ESCAPE HTML
-   ---------------------------------------------------------
-   Safety helper for dynamic text.
-========================================================= */
-
-function escapeHTML(value) {
-
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}
-
-
-/* =========================================================
-   7. GENERATE MENU
-========================================================= */
-
-function renderMenu() {
-
-    if (!menuGrid) return;
+    const MENU_URL =
+        "https://aashish0905.github.io/QR-Menu-Card/";
 
     /*
-       अगर HTML में menu cards पहले से मौजूद हैं,
-       तो data से cards generate नहीं करेंगे।
+      IMPORTANT:
+      Replace this demo number with the hotel's
+      real WhatsApp number.
+
+      Example:
+      917000000000
     */
 
-    const existingCards = $$(".menu-card", menuGrid);
-
-    if (existingCards.length > 0) {
-        setupExistingMenuCards();
-        filterExistingCards();
-        return;
-    }
-
-    const filteredItems = menuData.filter(item => {
-
-        const categoryMatch =
-            currentCategory === "all" ||
-            item.category === currentCategory;
-
-        const searchText = currentSearch.toLowerCase().trim();
-
-        const searchMatch =
-            !searchText ||
-            item.name.toLowerCase().includes(searchText) ||
-            item.description.toLowerCase().includes(searchText);
-
-        return categoryMatch && searchMatch;
-    });
+    const WHATSAPP_NUMBER =
+        "919999999999";
 
 
-    menuGrid.innerHTML = "";
+    /* =================================================
+       MENU DATA
+    ================================================= */
 
+    const menuItems = [
 
-    if (filteredItems.length === 0) {
+        {
+            id: 1,
+            name: "Paneer Tikka",
+            category: "starters",
+            price: 220,
+            emoji: "🥘",
+            description: "Soft paneer with aromatic spices."
+        },
 
-        if (noResults) {
-            noResults.hidden = false;
+        {
+            id: 2,
+            name: "Veg Manchurian",
+            category: "chinese",
+            price: 180,
+            emoji: "🥢",
+            description: "Crispy vegetable balls in Manchurian sauce."
+        },
+
+        {
+            id: 3,
+            name: "Paneer Butter Masala",
+            category: "north-indian",
+            price: 240,
+            emoji: "🍛",
+            description: "Creamy tomato gravy with soft paneer."
+        },
+
+        {
+            id: 4,
+            name: "Dal Tadka",
+            category: "north-indian",
+            price: 160,
+            emoji: "🥣",
+            description: "Yellow dal tempered with Indian spices."
+        },
+
+        {
+            id: 5,
+            name: "Butter Naan",
+            category: "breads",
+            price: 45,
+            emoji: "🫓",
+            description: "Soft naan topped with butter."
+        },
+
+        {
+            id: 6,
+            name: "Garlic Naan",
+            category: "breads",
+            price: 60,
+            emoji: "🫓",
+            description: "Tandoori naan with garlic and coriander."
+        },
+
+        {
+            id: 7,
+            name: "Veg Fried Rice",
+            category: "rice",
+            price: 180,
+            emoji: "🍚",
+            description: "Fragrant rice tossed with fresh vegetables."
+        },
+
+        {
+            id: 8,
+            name: "Jeera Rice",
+            category: "rice",
+            price: 130,
+            emoji: "🍚",
+            description: "Basmati rice tempered with cumin."
+        },
+
+        {
+            id: 9,
+            name: "Cold Coffee",
+            category: "beverages",
+            price: 120,
+            emoji: "🥤",
+            description: "Creamy chilled coffee."
+        },
+
+        {
+            id: 10,
+            name: "Fresh Lime Soda",
+            category: "beverages",
+            price: 80,
+            emoji: "🍋",
+            description: "Refreshing lemon soda."
+        },
+
+        {
+            id: 11,
+            name: "Gulab Jamun",
+            category: "desserts",
+            price: 90,
+            emoji: "🍮",
+            description: "Soft gulab jamun served warm."
+        },
+
+        {
+            id: 12,
+            name: "Ice Cream",
+            category: "desserts",
+            price: 100,
+            emoji: "🍨",
+            description: "Creamy chilled ice cream."
         }
 
-        return;
-    }
+    ];
 
 
-    if (noResults) {
-        noResults.hidden = true;
-    }
+    /* =================================================
+       DOM
+    ================================================= */
 
+    const menuGrid =
+        document.getElementById("menuGrid");
 
-    filteredItems.forEach((item, index) => {
+    const searchInput =
+        document.getElementById("menuSearch");
 
-        const card = document.createElement("article");
+    const clearSearch =
+        document.getElementById("clearSearch");
 
-        card.className = "menu-card";
+    const categoryButtons =
+        document.querySelectorAll(".category-btn");
 
-        card.dataset.id = item.id;
+    const noResults =
+        document.getElementById("noResults");
 
-        card.dataset.category = item.category;
+    const resetMenu =
+        document.getElementById("resetMenu");
 
-        card.style.animationDelay = `${index * 40}ms`;
+    const cartOpenBtn =
+        document.getElementById("cartOpenBtn");
 
+    const cartCloseBtn =
+        document.getElementById("cartCloseBtn");
 
-        card.innerHTML = `
-            <div class="food-image">
+    const cartDrawer =
+        document.getElementById("cartDrawer");
 
-                <img
-                    src="${escapeHTML(item.image)}"
-                    alt="${escapeHTML(item.name)}"
-                    loading="lazy"
-                    onerror="this.src='https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=80';"
-                >
+    const cartOverlay =
+        document.getElementById("cartOverlay");
 
-                ${
-                    item.tag
-                        ? `<span class="food-tag">${escapeHTML(item.tag)}</span>`
-                        : ""
-                }
+    const cartItemsContainer =
+        document.getElementById("cartItems");
 
-            </div>
+    const cartCount =
+        document.getElementById("cartCount");
 
+    const emptyCart =
+        document.getElementById("emptyCart");
 
-            <div class="food-content">
+    const cartFooter =
+        document.getElementById("cartFooter");
 
-                <div class="food-title-row">
+    const cartSubtotal =
+        document.getElementById("cartSubtotal");
 
-                    <h3>
-                        ${escapeHTML(item.name)}
-                    </h3>
+    const cartTax =
+        document.getElementById("cartTax");
 
-                    <span class="food-price">
-                        ${formatPrice(item.price)}
-                    </span>
+    const cartTotal =
+        document.getElementById("cartTotal");
 
-                </div>
+    const checkoutBtn =
+        document.getElementById("checkoutBtn");
 
+    const startOrdering =
+        document.getElementById("startOrdering");
 
-                <p>
-                    ${escapeHTML(item.description)}
-                </p>
+    const checkoutModal =
+        document.getElementById("checkoutModal");
 
+    const checkoutCloseBtn =
+        document.getElementById("checkoutCloseBtn");
 
-                <button
-                    class="add-to-cart"
-                    type="button"
-                    data-id="${item.id}"
-                >
-                    <span>Add to Cart</span>
+    const checkoutForm =
+        document.getElementById("checkoutForm");
 
-                    <i class="fa-solid fa-plus"></i>
-                </button>
+    const checkoutItems =
+        document.getElementById("checkoutItems");
 
-            </div>
-        `;
+    const checkoutTotal =
+        document.getElementById("checkoutTotal");
 
+    const successModal =
+        document.getElementById("successModal");
 
-        menuGrid.appendChild(card);
+    const successCloseBtn =
+        document.getElementById("successCloseBtn");
 
-    });
+    const successWhatsappBtn =
+        document.getElementById("successWhatsappBtn");
 
+    const orderIdElement =
+        document.getElementById("orderId");
 
-    bindAddToCartButtons();
-}
+    const toast =
+        document.getElementById("toast");
 
+    const toastMessage =
+        document.getElementById("toastMessage");
 
-/* =========================================================
-   8. EXISTING HTML MENU CARDS
-========================================================= */
 
-function setupExistingMenuCards() {
+    /* =================================================
+       CART
+    ================================================= */
 
-    const cards = $$(".menu-card", menuGrid);
+    let cart =
+        JSON.parse(
+            localStorage.getItem("hotelJatashankarCart")
+        ) || [];
 
-    cards.forEach(card => {
 
-        const button = $(".add-to-cart", card);
+    let selectedCategory = "all";
 
-        if (!button) return;
+    let lastOrderMessage = "";
 
-        if (button.dataset.bound === "true") return;
 
-        button.dataset.bound = "true";
+    /* =================================================
+       SAVE CART
+    ================================================= */
 
-        button.addEventListener("click", () => {
-
-            const id =
-                Number(
-                    button.dataset.id ||
-                    card.dataset.id
-                );
-
-            const item = getItemById(id, card);
-
-            if (item) {
-                addToCart(item);
-            }
-
-        });
-
-    });
-}
-
-
-/* =========================================================
-   9. GET ITEM
-========================================================= */
-
-function getItemById(id, card = null) {
-
-    const dataItem = menuData.find(
-        item => item.id === Number(id)
-    );
-
-    if (dataItem) {
-        return dataItem;
-    }
-
-
-    /*
-       अगर item menuData में नहीं है,
-       तो HTML card से information निकालेंगे.
-    */
-
-    if (!card) return null;
-
-
-    const name =
-        $(".food-title-row h3", card)?.textContent?.trim() ||
-        $(".food-content h3", card)?.textContent?.trim() ||
-        "Menu Item";
-
-
-    const priceText =
-        $(".food-price", card)?.textContent?.replace(/[^\d.]/g, "") ||
-        "0";
-
-
-    const description =
-        $(".food-content p", card)?.textContent?.trim() ||
-        "";
-
-
-    const image =
-        $(".food-image img", card)?.getAttribute("src") ||
-        "";
-
-
-    return {
-        id: Number(id),
-        name,
-        price: Number(priceText) || 0,
-        description,
-        image
-    };
-}
-
-
-/* =========================================================
-   10. BIND ADD TO CART
-========================================================= */
-
-function bindAddToCartButtons() {
-
-    $$(".add-to-cart", menuGrid).forEach(button => {
-
-        if (button.dataset.bound === "true") return;
-
-        button.dataset.bound = "true";
-
-
-        button.addEventListener("click", () => {
-
-            const card =
-                button.closest(".menu-card");
-
-            const id =
-                Number(
-                    button.dataset.id ||
-                    card?.dataset.id
-                );
-
-            const item =
-                getItemById(id, card);
-
-
-            if (!item) {
-                showToast("Item information not found");
-                return;
-            }
-
-
-            addToCart(item);
-
-        });
-
-    });
-}
-
-
-/* =========================================================
-   11. FILTER EXISTING CARDS
-========================================================= */
-
-function filterExistingCards() {
-
-    const cards = $$(".menu-card", menuGrid);
-
-    let visibleCount = 0;
-
-
-    cards.forEach(card => {
-
-        const category =
-            card.dataset.category || "all";
-
-        const text =
-            card.textContent.toLowerCase();
-
-        const categoryMatch =
-            currentCategory === "all" ||
-            category === currentCategory;
-
-        const searchMatch =
-            !currentSearch ||
-            text.includes(currentSearch.toLowerCase());
-
-
-        const visible =
-            categoryMatch &&
-            searchMatch;
-
-
-        card.style.display =
-            visible ? "" : "none";
-
-
-        if (visible) {
-            visibleCount++;
-        }
-
-    });
-
-
-    if (noResults) {
-        noResults.hidden =
-            visibleCount !== 0;
-    }
-
-}
-
-
-/* =========================================================
-   12. ADD TO CART
-========================================================= */
-
-function addToCart(item) {
-
-    const existing =
-        cart.find(
-            cartItem => cartItem.id === item.id
-        );
-
-
-    if (existing) {
-
-        existing.quantity += 1;
-
-    } else {
-
-        cart.push({
-            ...item,
-            quantity: 1
-        });
-
-    }
-
-
-    saveCart();
-
-    updateCart();
-
-    showToast(`${item.name} cart में add हो गया`);
-
-    openCart();
-
-}
-
-
-/* =========================================================
-   13. REMOVE FROM CART
-========================================================= */
-
-function removeFromCart(id) {
-
-    cart =
-        cart.filter(
-            item => item.id !== Number(id)
-        );
-
-
-    saveCart();
-
-    updateCart();
-
-}
-
-
-/* =========================================================
-   14. CHANGE QUANTITY
-========================================================= */
-
-function changeQuantity(id, change) {
-
-    const item =
-        cart.find(
-            cartItem => cartItem.id === Number(id)
-        );
-
-
-    if (!item) return;
-
-
-    item.quantity += change;
-
-
-    if (item.quantity <= 0) {
-
-        removeFromCart(id);
-
-        return;
-
-    }
-
-
-    saveCart();
-
-    updateCart();
-
-}
-
-
-/* =========================================================
-   15. CART TOTAL
-========================================================= */
-
-function getCartSubtotal() {
-
-    return cart.reduce(
-        (total, item) =>
-            total +
-            item.price *
-            item.quantity,
-        0
-    );
-
-}
-
-
-/* =========================================================
-   16. UPDATE CART
-========================================================= */
-
-function updateCart() {
-
-    const quantity =
-        cart.reduce(
-            (total, item) =>
-                total + item.quantity,
-            0
-        );
-
-
-    const subtotal =
-        getCartSubtotal();
-
-
-    if (cartCount) {
-        cartCount.textContent =
-            quantity;
-    }
-
-
-    if (subtotalElement) {
-        subtotalElement.textContent =
-            formatPrice(subtotal);
-    }
-
-
-    if (totalElement) {
-        totalElement.textContent =
-            formatPrice(subtotal);
-    }
-
-
-    if (cart.length === 0) {
-
-        if (emptyCart) {
-            emptyCart.hidden = false;
-        }
-
-        if (cartFooter) {
-            cartFooter.hidden = true;
-        }
-
-        if (cartItems) {
-            cartItems.innerHTML = "";
-        }
-
-        return;
-
-    }
-
-
-    if (emptyCart) {
-        emptyCart.hidden = true;
-    }
-
-    if (cartFooter) {
-        cartFooter.hidden = false;
-    }
-
-
-    if (!cartItems) return;
-
-
-    cartItems.innerHTML = "";
-
-
-    cart.forEach(item => {
-
-        const row =
-            document.createElement("div");
-
-        row.className = "cart-item";
-
-
-        row.innerHTML = `
-
-            <div class="cart-item-image">
-
-                <img
-                    src="${escapeHTML(item.image || "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=300&q=80")}"
-                    alt="${escapeHTML(item.name)}"
-                    onerror="this.src='https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=300&q=80';"
-                >
-
-            </div>
-
-
-            <div class="cart-item-info">
-
-                <h4>
-                    ${escapeHTML(item.name)}
-                </h4>
-
-                <p>
-                    ${formatPrice(item.price)}
-                </p>
-
-
-                <div class="quantity-control">
-
-                    <button
-                        type="button"
-                        data-action="minus"
-                        data-id="${item.id}"
-                    >
-                        <i class="fa-solid fa-minus"></i>
-                    </button>
-
-
-                    <span>
-                        ${item.quantity}
-                    </span>
-
-
-                    <button
-                        type="button"
-                        data-action="plus"
-                        data-id="${item.id}"
-                    >
-                        <i class="fa-solid fa-plus"></i>
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <strong class="cart-item-total">
-                ${formatPrice(
-                    item.price *
-                    item.quantity
-                )}
-            </strong>
-
-        `;
-
-
-        cartItems.appendChild(row);
-
-    });
-
-
-    bindCartQuantityButtons();
-
-}
-
-
-/* =========================================================
-   17. CART QUANTITY BUTTONS
-========================================================= */
-
-function bindCartQuantityButtons() {
-
-    $$("[data-action]", cartItems)
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    const id =
-                        Number(
-                            button.dataset.id
-                        );
-
-                    const action =
-                        button.dataset.action;
-
-
-                    changeQuantity(
-                        id,
-                        action === "plus"
-                            ? 1
-                            : -1
-                    );
-
-                }
-            );
-
-        });
-
-}
-
-
-/* =========================================================
-   18. SAVE CART
-========================================================= */
-
-function saveCart() {
-
-    try {
+    function saveCart() {
 
         localStorage.setItem(
             "hotelJatashankarCart",
             JSON.stringify(cart)
         );
 
-    } catch (error) {
+    }
 
-        console.warn(
-            "Cart save failed:",
-            error
-        );
+
+    /* =================================================
+       FORMAT PRICE
+    ================================================= */
+
+    function money(amount) {
+
+        return "₹" +
+            Number(amount).toLocaleString("en-IN");
 
     }
 
-}
+
+    /* =================================================
+       RENDER MENU
+    ================================================= */
+
+    function renderMenu() {
+
+        const searchTerm =
+            searchInput.value
+                .trim()
+                .toLowerCase();
 
 
-/* =========================================================
-   19. LOAD CART
-========================================================= */
+        const filtered =
+            menuItems.filter(item => {
 
-function loadCart() {
-
-    try {
-
-        const saved =
-            localStorage.getItem(
-                "hotelJatashankarCart"
-            );
+                const matchesCategory =
+                    selectedCategory === "all" ||
+                    item.category === selectedCategory;
 
 
-        if (saved) {
+                const matchesSearch =
+                    item.name
+                        .toLowerCase()
+                        .includes(searchTerm);
 
-            const parsed =
-                JSON.parse(saved);
+
+                return (
+                    matchesCategory &&
+                    matchesSearch
+                );
+
+            });
 
 
-            if (Array.isArray(parsed)) {
+        menuGrid.innerHTML = "";
 
-                cart = parsed;
 
-            }
+        if (filtered.length === 0) {
+
+            noResults.classList.add("show");
+
+            return;
 
         }
 
-    } catch (error) {
 
-        cart = [];
+        noResults.classList.remove("show");
 
-        console.warn(
-            "Cart load failed:",
-            error
-        );
 
-    }
+        filtered.forEach(item => {
 
-}
+            const card =
+                document.createElement("article");
 
+            card.className = "menu-card";
 
-/* =========================================================
-   20. OPEN CART
-========================================================= */
+            card.innerHTML = `
 
-function openCart() {
+                <div class="food-image">
+                    ${item.emoji}
+                </div>
 
-    if (!cartDrawer) return;
+                <div class="food-content">
 
+                    <span class="food-tag">
+                        ${formatCategory(item.category)}
+                    </span>
 
-    cartDrawer.classList.add("open");
+                    <div class="food-title-row">
 
+                        <h3>
+                            ${item.name}
+                        </h3>
 
-    if (cartOverlay) {
-        cartOverlay.hidden = false;
-    }
+                        <span class="food-price">
+                            ${money(item.price)}
+                        </span>
 
+                    </div>
 
-    document.body.classList.add(
-        "cart-open"
-    );
+                    <p class="food-description">
+                        ${item.description}
+                    </p>
 
-}
+                    <button
+                        class="add-to-cart"
+                        data-id="${item.id}"
+                        type="button"
+                    >
+                        + Add to Cart
+                    </button>
 
+                </div>
 
-/* =========================================================
-   21. CLOSE CART
-========================================================= */
+            `;
 
-function closeCart() {
 
-    if (!cartDrawer) return;
+            menuGrid.appendChild(card);
 
-
-    cartDrawer.classList.remove("open");
-
-
-    if (cartOverlay) {
-        cartOverlay.hidden = true;
-    }
-
-
-    document.body.classList.remove(
-        "cart-open"
-    );
-
-}
-
-
-/* =========================================================
-   22. OPEN CHECKOUT
-========================================================= */
-
-function openCheckout() {
-
-    if (cart.length === 0) {
-
-        showToast(
-            "पहले cart में item add करें"
-        );
-
-        return;
-    }
-
-
-    renderCheckoutSummary();
-
-
-    closeCart();
-
-
-    if (checkoutModal) {
-
-        checkoutModal.hidden = false;
-
-    }
-
-
-    document.body.classList.add(
-        "modal-open"
-    );
-
-}
-
-
-/* =========================================================
-   23. CLOSE CHECKOUT
-========================================================= */
-
-function closeCheckout() {
-
-    if (checkoutModal) {
-
-        checkoutModal.hidden = true;
-
-    }
-
-
-    document.body.classList.remove(
-        "modal-open"
-    );
-
-}
-
-
-/* =========================================================
-   24. CHECKOUT SUMMARY
-========================================================= */
-
-function renderCheckoutSummary() {
-
-    if (!checkoutItems) return;
-
-
-    checkoutItems.innerHTML = "";
-
-
-    cart.forEach(item => {
-
-        const row =
-            document.createElement("div");
-
-        row.className =
-            "checkout-item";
-
-
-        row.innerHTML = `
-
-            <span>
-                ${escapeHTML(item.name)}
-                × ${item.quantity}
-            </span>
-
-            <strong>
-                ${formatPrice(
-                    item.price *
-                    item.quantity
-                )}
-            </strong>
-
-        `;
-
-
-        checkoutItems.appendChild(row);
-
-    });
-
-
-    if (checkoutTotal) {
-
-        checkoutTotal.textContent =
-            formatPrice(
-                getCartSubtotal()
-            );
-
-    }
-
-}
-
-
-/* =========================================================
-   25. GENERATE ORDER NUMBER
-========================================================= */
-
-function generateOrderNumber() {
-
-    const now =
-        new Date();
-
-
-    const date =
-        now.getFullYear().toString().slice(-2) +
-        String(
-            now.getMonth() + 1
-        ).padStart(2, "0") +
-        String(
-            now.getDate()
-        ).padStart(2, "0");
-
-
-    const random =
-        Math.floor(
-            1000 +
-            Math.random() * 9000
-        );
-
-
-    return `HJ${date}${random}`;
-
-}
-
-
-/* =========================================================
-   26. WHATSAPP NUMBER
-   ---------------------------------------------------------
-   Demo number.
-   बाद में hotel का actual WhatsApp number डालें.
-========================================================= */
-
-const HOTEL_WHATSAPP =
-    "919999999999";
-
-
-/* =========================================================
-   27. CREATE WHATSAPP MESSAGE
-========================================================= */
-
-function createWhatsAppMessage(orderNumber = "") {
-
-    const name =
-        $("#customerName")?.value?.trim() ||
-        "Customer";
-
-
-    const phone =
-        $("#customerPhone")?.value?.trim() ||
-        "";
-
-
-    const orderType =
-        $('input[name="orderType"]:checked')?.value ||
-        "Dine In";
-
-
-    const payment =
-        $('input[name="paymentMethod"]:checked')?.value ||
-        "Cash";
-
-
-    const address =
-        $("#customerAddress")?.value?.trim() ||
-        "";
-
-
-    const notes =
-        $("#orderNotes")?.value?.trim() ||
-        "";
-
-
-    let message =
-        `*HOTEL JATASHANKAR*\n`;
-
-
-    message +=
-        `Chhatarpur, Madhya Pradesh\n\n`;
-
-
-    message +=
-        `*Order:* ${orderNumber || "New Order"}\n`;
-
-
-    message +=
-        `*Customer:* ${name}\n`;
-
-
-    if (phone) {
-        message +=
-            `*Mobile:* ${phone}\n`;
-    }
-
-
-    message +=
-        `*Order Type:* ${orderType}\n`;
-
-
-    message +=
-        `*Payment:* ${payment}\n\n`;
-
-
-    message +=
-        `*ORDER ITEMS*\n`;
-
-
-    cart.forEach(item => {
-
-        message +=
-            `• ${item.name} × ${item.quantity} = ${formatPrice(
-                item.price *
-                item.quantity
-            )}\n`;
-
-    });
-
-
-    message +=
-        `\n*TOTAL: ${formatPrice(
-            getCartSubtotal()
-        )}*\n`;
-
-
-    if (address) {
-
-        message +=
-            `\n*Address:* ${address}\n`;
-
-    }
-
-
-    if (notes) {
-
-        message +=
-            `*Note:* ${notes}\n`;
-
-    }
-
-
-    message +=
-        `\nThank you for ordering from Hotel Jatashankar.`;
-
-
-
-    return message;
-
-}
-
-
-/* =========================================================
-   28. OPEN WHATSAPP
-========================================================= */
-
-function openWhatsApp(message) {
-
-    const encoded =
-        encodeURIComponent(message);
-
-
-    const url =
-        `https://wa.me/${HOTEL_WHATSAPP}?text=${encoded}`;
-
-
-    window.open(
-        url,
-        "_blank",
-        "noopener,noreferrer"
-    );
-
-}
-
-
-/* =========================================================
-   29. PLACE ORDER
-========================================================= */
-
-function placeOrder() {
-
-    if (cart.length === 0) {
-
-        showToast(
-            "Cart खाली है"
-        );
-
-        return;
-
-    }
-
-
-    if (!checkoutForm) return;
-
-
-    if (!checkoutForm.checkValidity()) {
-
-        checkoutForm.reportValidity();
-
-        return;
-
-    }
-
-
-    const orderNumber =
-        generateOrderNumber();
-
-
-    /*
-       Demo order save
-    */
-
-    const order = {
-
-        orderNumber,
-
-        customerName:
-            $("#customerName")?.value?.trim() || "",
-
-        customerPhone:
-            $("#customerPhone")?.value?.trim() || "",
-
-        orderType:
-            $('input[name="orderType"]:checked')?.value || "",
-
-        paymentMethod:
-            $('input[name="paymentMethod"]:checked')?.value || "",
-
-        address:
-            $("#customerAddress")?.value?.trim() || "",
-
-        notes:
-            $("#orderNotes")?.value?.trim() || "",
-
-        items: [...cart],
-
-        total: getCartSubtotal(),
-
-        createdAt:
-            new Date().toISOString()
-
-    };
-
-
-    try {
-
-        localStorage.setItem(
-            "lastHotelJatashankarOrder",
-            JSON.stringify(order)
-        );
-
-    } catch (error) {
-
-        console.warn(
-            "Order save failed:",
-            error
-        );
-
-    }
-
-
-    showSuccessModal(orderNumber);
-
-}
-
-
-/* =========================================================
-   30. SUCCESS MODAL
-========================================================= */
-
-let lastOrderNumber = "";
-
-
-function showSuccessModal(orderNumber) {
-
-    lastOrderNumber =
-        orderNumber;
-
-
-    closeCheckout();
-
-
-    if (successModal) {
-
-        successModal.hidden = false;
-
-    }
-
-
-    document.body.classList.add(
-        "modal-open"
-    );
-
-
-    const orderNumberElement =
-        $(".success-order-number strong");
-
-
-    if (orderNumberElement) {
-
-        orderNumberElement.textContent =
-            orderNumber;
-
-    }
-
-}
-
-
-/* =========================================================
-   31. CLOSE SUCCESS MODAL
-========================================================= */
-
-function closeSuccessModal() {
-
-    if (successModal) {
-
-        successModal.hidden = true;
-
-    }
-
-
-    document.body.classList.remove(
-        "modal-open"
-    );
-
-
-    cart = [];
-
-    saveCart();
-
-    updateCart();
-
-}
-
-
-/* =========================================================
-   32. DEMO PAYMENT
-========================================================= */
-
-function demoPayment() {
-
-    if (cart.length === 0) {
-
-        showToast(
-            "Cart खाली है"
-        );
-
-        return;
-
-    }
-
-
-    const total =
-        formatPrice(
-            getCartSubtotal()
-        );
-
-
-    alert(
-        `DEMO PAYMENT\n\nAmount: ${total}\n\nReal payment gateway अभी connect नहीं है.`
-    );
-
-}
-
-
-/* =========================================================
-   33. SEARCH
-========================================================= */
-
-function performSearch() {
-
-    currentSearch =
-        searchInput?.value?.trim() || "";
-
-
-    if (clearSearchBtn) {
-
-        clearSearchBtn.classList.toggle(
-            "active",
-            Boolean(currentSearch)
-        );
-
-    }
-
-
-    renderMenu();
-
-}
-
-
-/* =========================================================
-   34. CATEGORY FILTER
-========================================================= */
-
-function selectCategory(button) {
-
-    categoryButtons.forEach(btn => {
-
-        btn.classList.remove(
-            "active"
-        );
-
-    });
-
-
-    button.classList.add(
-        "active"
-    );
-
-
-    currentCategory =
-        button.dataset.category ||
-        "all";
-
-
-    renderMenu();
-
-
-    /*
-       Mobile पर selected category
-       थोड़ा visible रखने के लिए.
-    */
-
-    if (
-        window.innerWidth < 600
-    ) {
-
-        button.scrollIntoView({
-            behavior: "smooth",
-            block: "nearest",
-            inline: "center"
         });
 
     }
 
-}
+
+    /* =================================================
+       CATEGORY NAME
+    ================================================= */
+
+    function formatCategory(category) {
+
+        const names = {
+
+            "starters": "Starters",
+
+            "north-indian": "North Indian",
+
+            "chinese": "Chinese",
+
+            "breads": "Breads",
+
+            "rice": "Rice",
+
+            "beverages": "Beverages",
+
+            "desserts": "Desserts"
+
+        };
+
+        return names[category] || category;
+
+    }
 
 
-/* =========================================================
-   35. SEARCH BUTTON
-========================================================= */
+    /* =================================================
+       ADD TO CART
+    ================================================= */
 
-function toggleSearch() {
+    function addToCart(id) {
 
-    if (!searchContainer) return;
+        const item =
+            menuItems.find(
+                product => product.id === id
+            );
 
 
-    searchContainer.classList.toggle(
-        "active"
+        if (!item) return;
+
+
+        const existing =
+            cart.find(
+                product => product.id === id
+            );
+
+
+        if (existing) {
+
+            existing.quantity += 1;
+
+        } else {
+
+            cart.push({
+
+                id: item.id,
+
+                name: item.name,
+
+                price: item.price,
+
+                quantity: 1
+
+            });
+
+        }
+
+
+        saveCart();
+
+        updateCart();
+
+        showToast(
+            `${item.name} added to cart`
+        );
+
+    }
+
+
+    /* =================================================
+       REMOVE / QUANTITY
+    ================================================= */
+
+    function changeQuantity(id, amount) {
+
+        const item =
+            cart.find(
+                product => product.id === id
+            );
+
+
+        if (!item) return;
+
+
+        item.quantity += amount;
+
+
+        if (item.quantity <= 0) {
+
+            cart =
+                cart.filter(
+                    product => product.id !== id
+                );
+
+        }
+
+
+        saveCart();
+
+        updateCart();
+
+    }
+
+
+    /* =================================================
+       CART TOTALS
+    ================================================= */
+
+    function getSubtotal() {
+
+        return cart.reduce(
+            (total, item) =>
+                total +
+                item.price * item.quantity,
+            0
+        );
+
+    }
+
+
+    function getTax() {
+
+        /*
+          Demo tax:
+          5%
+        */
+
+        return Math.round(
+            getSubtotal() * 0.05
+        );
+
+    }
+
+
+    function getTotal() {
+
+        return getSubtotal() + getTax();
+
+    }
+
+
+    /* =================================================
+       UPDATE CART
+    ================================================= */
+
+    function updateCart() {
+
+        const quantity =
+            cart.reduce(
+                (total, item) =>
+                    total + item.quantity,
+                0
+            );
+
+
+        cartCount.textContent =
+            quantity;
+
+
+        cartItemsContainer.innerHTML = "";
+
+
+        if (cart.length === 0) {
+
+            emptyCart.classList.add("show");
+
+            cartFooter.style.display = "none";
+
+            return;
+
+        }
+
+
+        emptyCart.classList.remove("show");
+
+        cartFooter.style.display = "block";
+
+
+        cart.forEach(item => {
+
+            const element =
+                document.createElement("div");
+
+            element.className = "cart-item";
+
+
+            element.innerHTML = `
+
+                <div class="cart-item-info">
+
+                    <h4>
+                        ${item.name}
+                    </h4>
+
+                    <p>
+                        ${money(
+                            item.price * item.quantity
+                        )}
+                    </p>
+
+                </div>
+
+
+                <div class="cart-controls">
+
+                    <button
+                        type="button"
+                        data-action="minus"
+                        data-id="${item.id}"
+                    >
+                        −
+                    </button>
+
+                    <span>
+                        ${item.quantity}
+                    </span>
+
+                    <button
+                        type="button"
+                        data-action="plus"
+                        data-id="${item.id}"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            `;
+
+
+            cartItemsContainer.appendChild(element);
+
+        });
+
+
+        const subtotal =
+            getSubtotal();
+
+        const tax =
+            getTax();
+
+        const total =
+            getTotal();
+
+
+        cartSubtotal.textContent =
+            money(subtotal);
+
+        cartTax.textContent =
+            money(tax);
+
+        cartTotal.textContent =
+            money(total);
+
+    }
+
+
+    /* =================================================
+       CART EVENTS
+    ================================================= */
+
+    menuGrid.addEventListener(
+        "click",
+        event => {
+
+            const button =
+                event.target.closest(
+                    ".add-to-cart"
+                );
+
+
+            if (!button) return;
+
+
+            addToCart(
+                Number(button.dataset.id)
+            );
+
+        }
     );
 
 
-    if (
-        searchContainer.classList.contains(
-            "active"
-        )
-    ) {
+    cartItemsContainer.addEventListener(
+        "click",
+        event => {
 
-        setTimeout(() => {
+            const button =
+                event.target.closest("button");
 
-            searchInput?.focus();
 
-        }, 100);
+            if (!button) return;
 
-    } else {
 
-        if (searchInput) {
+            const id =
+                Number(button.dataset.id);
+
+
+            if (
+                button.dataset.action === "plus"
+            ) {
+
+                changeQuantity(id, 1);
+
+            }
+
+
+            if (
+                button.dataset.action === "minus"
+            ) {
+
+                changeQuantity(id, -1);
+
+            }
+
+        }
+    );
+
+
+    /* =================================================
+       OPEN CART
+    ================================================= */
+
+    function openCart() {
+
+        cartDrawer.classList.add("active");
+
+        cartOverlay.classList.add("active");
+
+        document.body.style.overflow = "hidden";
+
+    }
+
+
+    function closeCart() {
+
+        cartDrawer.classList.remove("active");
+
+        cartOverlay.classList.remove("active");
+
+        document.body.style.overflow = "";
+
+    }
+
+
+    cartOpenBtn.addEventListener(
+        "click",
+        openCart
+    );
+
+
+    cartCloseBtn.addEventListener(
+        "click",
+        closeCart
+    );
+
+
+    cartOverlay.addEventListener(
+        "click",
+        closeCart
+    );
+
+
+    startOrdering.addEventListener(
+        "click",
+        () => {
+
+            closeCart();
+
+            document
+                .getElementById("menu")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+        }
+    );
+
+
+    /* =================================================
+       SEARCH
+    ================================================= */
+
+    searchInput.addEventListener(
+        "input",
+        renderMenu
+    );
+
+
+    clearSearch.addEventListener(
+        "click",
+        () => {
 
             searchInput.value = "";
 
+            renderMenu();
+
+            searchInput.focus();
+
+        }
+    );
+
+
+    /* =================================================
+       CATEGORY
+    ================================================= */
+
+    categoryButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                categoryButtons.forEach(btn =>
+                    btn.classList.remove("active")
+                );
+
+
+                button.classList.add("active");
+
+
+                selectedCategory =
+                    button.dataset.category;
+
+
+                renderMenu();
+
+            }
+        );
+
+    });
+
+
+    resetMenu.addEventListener(
+        "click",
+        () => {
+
+            selectedCategory = "all";
+
+            searchInput.value = "";
+
+
+            categoryButtons.forEach(btn =>
+                btn.classList.remove("active")
+            );
+
+
+            document
+                .querySelector(
+                    '.category-btn[data-category="all"]'
+                )
+                .classList.add("active");
+
+
+            renderMenu();
+
+        }
+    );
+
+
+    /* =================================================
+       CHECKOUT
+    ================================================= */
+
+    checkoutBtn.addEventListener(
+        "click",
+        () => {
+
+            if (cart.length === 0) {
+
+                showToast(
+                    "Your cart is empty"
+                );
+
+                return;
+
+            }
+
+
+            renderCheckout();
+
+            checkoutModal.classList.add("active");
+
+        }
+    );
+
+
+    checkoutCloseBtn.addEventListener(
+        "click",
+        () => {
+
+            checkoutModal.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    /* =================================================
+       CHECKOUT SUMMARY
+    ================================================= */
+
+    function renderCheckout() {
+
+        checkoutItems.innerHTML = "";
+
+
+        cart.forEach(item => {
+
+            const row =
+                document.createElement("div");
+
+            row.className =
+                "checkout-item";
+
+
+            row.innerHTML = `
+
+                <span>
+                    ${item.name}
+                    × ${item.quantity}
+                </span>
+
+                <strong>
+                    ${money(
+                        item.price *
+                        item.quantity
+                    )}
+                </strong>
+
+            `;
+
+
+            checkoutItems.appendChild(row);
+
+        });
+
+
+        checkoutTotal.textContent =
+            money(getTotal());
+
+    }
+
+
+    /* =================================================
+       PLACE ORDER
+    ================================================= */
+
+    checkoutForm.addEventListener(
+        "submit",
+        event => {
+
+            event.preventDefault();
+
+
+            if (cart.length === 0) {
+
+                showToast(
+                    "Please add items first"
+                );
+
+                return;
+
+            }
+
+
+            const name =
+                document
+                    .getElementById(
+                        "customerName"
+                    )
+                    .value
+                    .trim();
+
+
+            const phone =
+                document
+                    .getElementById(
+                        "customerPhone"
+                    )
+                    .value
+                    .trim();
+
+
+            const address =
+                document
+                    .getElementById(
+                        "customerAddress"
+                    )
+                    .value
+                    .trim();
+
+
+            const orderType =
+                document.querySelector(
+                    'input[name="orderType"]:checked'
+                ).value;
+
+
+            const payment =
+                document.querySelector(
+                    'input[name="payment"]:checked'
+                ).value;
+
+
+            if (!/^[0-9]{10}$/.test(phone)) {
+
+                alert(
+                    "Please enter a valid 10 digit mobile number."
+                );
+
+                return;
+
+            }
+
+
+            const orderID =
+                "HJ" +
+                Date.now()
+                    .toString()
+                    .slice(-6);
+
+
+            const itemLines =
+                cart.map(item => {
+
+                    return (
+                        `• ${item.name} x ${item.quantity}` +
+                        ` = ${money(
+                            item.price *
+                            item.quantity
+                        )}`
+                    );
+
+                }).join("\n");
+
+
+            lastOrderMessage =
+
+                `*Hotel Jatashankar Order*\n\n` +
+
+                `Order ID: ${orderID}\n` +
+
+                `Name: ${name}\n` +
+
+                `Phone: ${phone}\n` +
+
+                `Order Type: ${orderType}\n` +
+
+                `Address/Table: ${
+                    address || "Not provided"
+                }\n\n` +
+
+                `*Items:*\n` +
+
+                `${itemLines}\n\n` +
+
+                `Subtotal: ${money(
+                    getSubtotal()
+                )}\n` +
+
+                `Tax: ${money(
+                    getTax()
+                )}\n` +
+
+                `*Total: ${money(
+                    getTotal()
+                )}*\n\n` +
+
+                `Payment: ${payment}`;
+
+
+            orderIdElement.textContent =
+                orderID;
+
+
+            checkoutModal.classList.remove(
+                "active"
+            );
+
+
+            closeCart();
+
+
+            successModal.classList.add(
+                "active"
+            );
+
+
+            localStorage.setItem(
+                "lastHotelOrder",
+                JSON.stringify({
+                    orderID,
+                    name,
+                    phone,
+                    address,
+                    orderType,
+                    payment,
+                    cart,
+                    total: getTotal()
+                })
+            );
+
+
+            /*
+              Keep cart after order for demo.
+              You can clear it after successful backend order.
+            */
+
+        }
+    );
+
+
+    /* =================================================
+       WHATSAPP ORDER
+    ================================================= */
+
+    successWhatsappBtn.addEventListener(
+        "click",
+        () => {
+
+            const url =
+                `https://wa.me/${WHATSAPP_NUMBER}` +
+                `?text=${encodeURIComponent(
+                    lastOrderMessage
+                )}`;
+
+
+            window.open(
+                url,
+                "_blank",
+                "noopener"
+            );
+
+        }
+    );
+
+
+    successCloseBtn.addEventListener(
+        "click",
+        () => {
+
+            successModal.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    /* =================================================
+       QR CODE
+    ================================================= */
+
+    function generateQR(
+        containerID,
+        size = 250
+    ) {
+
+        const container =
+            document.getElementById(
+                containerID
+            );
+
+
+        if (!container) return;
+
+
+        container.innerHTML = "";
+
+
+        if (
+            typeof QRCode ===
+            "undefined"
+        ) {
+
+            container.innerHTML = `
+                <p style="
+                    color:#777;
+                    font-size:12px;
+                ">
+                    QR loading...
+                </p>
+            `;
+
+            return;
+
         }
 
-        currentSearch = "";
 
-        clearSearchBtn?.classList.remove(
+        new QRCode(
+            container,
+            {
+                text: MENU_URL,
+
+                width: size,
+                height: size,
+
+                colorDark: "#111111",
+
+                colorLight: "#ffffff",
+
+                correctLevel:
+                    QRCode.CorrectLevel.H
+            }
+        );
+
+    }
+
+
+    /*
+      Main QR
+    */
+
+    generateQR(
+        "qrCode",
+        250
+    );
+
+
+    /* =================================================
+       QR POPUP
+    ================================================= */
+
+    const qrModal =
+        document.getElementById("qrModal");
+
+    const openQRBtn =
+        document.getElementById("openQRBtn");
+
+    const heroQRBtn =
+        document.getElementById("heroQRBtn");
+
+    const footerQRBtn =
+        document.getElementById("footerQRBtn");
+
+    const qrModalClose =
+        document.getElementById("qrModalClose");
+
+    const downloadPopupQR =
+        document.getElementById(
+            "downloadPopupQR"
+        );
+
+
+    function openQRModal() {
+
+        generateQR(
+            "popupQR",
+            230
+        );
+
+        qrModal.classList.add(
             "active"
         );
 
-        renderMenu();
-
-    }
-
-}
-
-
-/* =========================================================
-   36. CLEAR SEARCH
-========================================================= */
-
-function clearSearch() {
-
-    if (searchInput) {
-
-        searchInput.value = "";
-
     }
 
 
-    currentSearch = "";
+    function closeQRModal() {
 
-
-    clearSearchBtn?.classList.remove(
-        "active"
-    );
-
-
-    renderMenu();
-
-
-    searchInput?.focus();
-
-}
-
-
-/* =========================================================
-   37. TOAST
-========================================================= */
-
-function showToast(message) {
-
-    if (!toast) return;
-
-
-    const toastText =
-        $(".toast-message", toast);
-
-
-    if (toastText) {
-
-        toastText.textContent =
-            message;
-
-    } else {
-
-        toast.textContent =
-            message;
-
-    }
-
-
-    toast.classList.add(
-        "show"
-    );
-
-
-    clearTimeout(
-        toastTimer
-    );
-
-
-    toastTimer =
-        setTimeout(() => {
-
-            toast.classList.remove(
-                "show"
-            );
-
-        }, 2500);
-
-}
-
-
-/* =========================================================
-   38. HEADER SCROLL
-========================================================= */
-
-function handleHeaderScroll() {
-
-    if (!siteHeader) return;
-
-
-    siteHeader.classList.toggle(
-        "scrolled",
-        window.scrollY > 20
-    );
-
-
-    if (backToTop) {
-
-        backToTop.classList.toggle(
-            "show",
-            window.scrollY > 500
+        qrModal.classList.remove(
+            "active"
         );
 
     }
 
-}
 
-
-/* =========================================================
-   39. BACK TO TOP
-========================================================= */
-
-function scrollToTop() {
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
-}
-
-
-/* =========================================================
-   40. EVENT LISTENERS
-========================================================= */
-
-
-/* Search */
-
-searchBtn?.addEventListener(
-    "click",
-    toggleSearch
-);
-
-
-searchInput?.addEventListener(
-    "input",
-    performSearch
-);
-
-
-clearSearchBtn?.addEventListener(
-    "click",
-    clearSearch
-);
-
-
-/* Categories */
-
-categoryButtons.forEach(button => {
-
-    button.addEventListener(
+    openQRBtn.addEventListener(
         "click",
-        () => selectCategory(button)
-    );
-
-});
-
-
-/* Cart */
-
-cartBtn?.addEventListener(
-    "click",
-    openCart
-);
-
-
-closeCartBtn?.addEventListener(
-    "click",
-    closeCart
-);
-
-
-cartOverlay?.addEventListener(
-    "click",
-    closeCart
-);
-
-
-/* Checkout */
-
-checkoutBtn?.addEventListener(
-    "click",
-    openCheckout
-);
-
-
-closeModalBtn?.addEventListener(
-    "click",
-    closeCheckout
-);
-
-
-/* Form */
-
-checkoutForm?.addEventListener(
-    "submit",
-    event => {
-
-        event.preventDefault();
-
-        placeOrder();
-
-    }
-);
-
-
-/* Demo Payment */
-
-$(".demo-payment-btn")
-    ?.addEventListener(
-        "click",
-        demoPayment
+        openQRModal
     );
 
 
-/* Success */
-
-successCloseBtn?.addEventListener(
-    "click",
-    closeSuccessModal
-);
+    heroQRBtn.addEventListener(
+        "click",
+        openQRModal
+    );
 
 
-/* Success WhatsApp */
+    footerQRBtn.addEventListener(
+        "click",
+        openQRModal
+    );
 
-whatsappSuccessBtn?.addEventListener(
-    "click",
-    () => {
 
-        const message =
-            createWhatsAppMessage(
-                lastOrderNumber
+    qrModalClose.addEventListener(
+        "click",
+        closeQRModal
+    );
+
+
+    /* =================================================
+       DOWNLOAD MAIN QR
+    ================================================= */
+
+    document
+        .getElementById("downloadQRBtn")
+        .addEventListener(
+            "click",
+            () => {
+
+                downloadQR(
+                    "qrCode",
+                    "Hotel-Jatashankar-QR-Menu.png"
+                );
+
+            }
+        );
+
+
+    /* =================================================
+       DOWNLOAD POPUP QR
+    ================================================= */
+
+    downloadPopupQR.addEventListener(
+        "click",
+        () => {
+
+            downloadQR(
+                "popupQR",
+                "Hotel-Jatashankar-QR-Menu.png"
+            );
+
+        }
+    );
+
+
+    function downloadQR(
+        containerID,
+        filename
+    ) {
+
+        const container =
+            document.getElementById(
+                containerID
             );
 
 
-        openWhatsApp(
-            message
-        );
-
-    }
-);
+        if (!container) return;
 
 
-/* Floating WhatsApp */
-
-floatingWhatsapp?.addEventListener(
-    "click",
-    event => {
-
-        event.preventDefault();
+        const canvas =
+            container.querySelector(
+                "canvas"
+            );
 
 
-        const message =
-            `Hello Hotel Jatashankar, mujhe menu/order ke regarding information chahiye.`;
+        const image =
+            container.querySelector(
+                "img"
+            );
 
 
-        openWhatsApp(
-            message
-        );
-
-    }
-);
+        let url = null;
 
 
-/* Back to top */
+        if (canvas) {
 
-backToTop?.addEventListener(
-    "click",
-    scrollToTop
-);
+            url =
+                canvas.toDataURL(
+                    "image/png"
+                );
 
+        } else if (image) {
 
-/* Scroll */
+            url =
+                image.src;
 
-window.addEventListener(
-    "scroll",
-    handleHeaderScroll,
-    { passive: true }
-);
+        }
 
 
-/* =========================================================
-   41. ESC KEY
-========================================================= */
+        if (!url) {
 
-document.addEventListener(
-    "keydown",
-    event => {
+            alert(
+                "QR code is not ready yet."
+            );
 
-        if (event.key !== "Escape") {
             return;
-        }
-
-
-        closeCart();
-
-        closeCheckout();
-
-        closeSuccessModal();
-
-    }
-);
-
-
-/* =========================================================
-   42. MODAL BACKDROP CLICK
-========================================================= */
-
-checkoutModal?.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
-            checkoutModal
-        ) {
-
-            closeCheckout();
 
         }
 
+
+        const link =
+            document.createElement("a");
+
+
+        link.href = url;
+
+        link.download = filename;
+
+
+        document.body.appendChild(
+            link
+        );
+
+
+        link.click();
+
+
+        document.body.removeChild(
+            link
+        );
+
     }
-);
 
 
-successModal?.addEventListener(
-    "click",
-    event => {
+    /* =================================================
+       TOAST
+    ================================================= */
 
-        if (
-            event.target ===
-            successModal
-        ) {
+    let toastTimer;
 
-            closeSuccessModal();
+
+    function showToast(message) {
+
+        toastMessage.textContent =
+            message;
+
+
+        toast.classList.add(
+            "show"
+        );
+
+
+        clearTimeout(
+            toastTimer
+        );
+
+
+        toastTimer =
+            setTimeout(
+                () => {
+
+                    toast.classList.remove(
+                        "show"
+                    );
+
+                },
+                2500
+            );
+
+    }
+
+
+    /* =================================================
+       YEAR
+    ================================================= */
+
+    document
+        .getElementById("currentYear")
+        .textContent =
+            new Date().getFullYear();
+
+
+    /* =================================================
+       ESC KEY
+    ================================================= */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (event.key !== "Escape") {
+                return;
+            }
+
+
+            closeCart();
+
+
+            checkoutModal.classList.remove(
+                "active"
+            );
+
+
+            successModal.classList.remove(
+                "active"
+            );
+
+
+            qrModal.classList.remove(
+                "active"
+            );
 
         }
-
-    }
-);
+    );
 
 
-/* =========================================================
-   43. INIT
-========================================================= */
-
-function init() {
-
-    loadCart();
+    /* =================================================
+       INITIAL LOAD
+    ================================================= */
 
     renderMenu();
 
     updateCart();
 
-    handleHeaderScroll();
-
-}
-
-
-/* =========================================================
-   44. START
-========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    init
-);
+});
